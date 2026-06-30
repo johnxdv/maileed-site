@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /Users/s11mn/maileed)",
+      "Bash(npm -v)",
+      "Read(//Users/s11mn/**)",
+      "Read(//usr/local/bin/**)",
+      "Bash(ls /opt/homebrew/bin/ 2>/dev/null | grep -iE \"node|npm|pnpm|yarn|bun|volta|fnm\" ; echo \"---\"; ls ~/.bun/bin 2>/dev/null; ls ~/.volta/bin 2>/dev/null; which brew 2>/dev/null; echo \"PATH=$PATH\")",
+      "Bash(sw_vers)",
+      "Bash(curl --version)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -fsSL -o node.tar.gz \"https://nodejs.org/dist/v20.18.1/node-v20.18.1-darwin-arm64.tar.gz\")",
+      "Bash(tar -xzf node.tar.gz)",
+      "Bash(mv node-v20.18.1-darwin-arm64 /tmp/nodejs)",
+      "Bash(/tmp/nodejs/bin/node -v)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(pkill -f \"vite --port 5173\")",
+      "Bash(sips -g pixelWidth -g pixelHeight logo.png)",
+      "Bash(python3 -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
+      "Bash(python3 -m pip install --quiet Pillow)",
+      "Bash(python3 -c \"from PIL import Image; print\\('ok'\\)\")",
+      "Bash(python3 -)"
+    ]
+  }
+}

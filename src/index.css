@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #0a0a0f;
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #1B1039;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5E3AA6;
+}
+
+::selection {
+  background: rgba(94, 58, 166, 0.4);
+  color: #fff;
+}
+
+@layer components {
+  .section-tag {
+    @apply inline-block text-xs font-semibold uppercase tracking-[0.25em] text-accent;
+  }
+
+  .glass-card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  }
+
+  .glass-card:hover {
+    @apply border-accent/40;
+    box-shadow: 0 0 50px -12px rgba(94, 58, 166, 0.5);
+  }
+
+  .glass-card--glow {
+    @apply border-accent/30;
+    box-shadow: 0 0 60px -18px rgba(94, 58, 166, 0.45);
+  }
+
+  .glass-card--glow:hover {
+    @apply border-accent/60;
+    box-shadow: 0 0 80px -12px rgba(94, 58, 166, 0.65);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-white;
+    box-shadow: 0 0 0 0 rgba(94, 58, 166, 0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-0.5 bg-[#7d4fda];
+    box-shadow: 0 10px 40px -8px rgba(94, 58, 166, 0.7);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-accent/50 px-7 py-3.5 text-sm font-semibold text-white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .btn-ghost:hover {
+    @apply -translate-y-0.5 border-accent bg-accent/10;
+    box-shadow: 0 10px 40px -12px rgba(94, 58, 166, 0.5);
+  }
+}
+
+/* Shine sweep across metric numbers */
+@keyframes shineSweep {
+  0% {
+    background-position: 180% center;
+  }
+  100% {
+    background-position: -80% center;
+  }
+}
+.metric-shine {
+  background: linear-gradient(
+    100deg,
+    #5E3AA6 0%,
+    #5E3AA6 38%,
+    #cabdee 50%,
+    #5E3AA6 62%,
+    #5E3AA6 100%
+  );
+  background-size: 220% 100%;
+  background-position: 180% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shineSweep 5.5s linear infinite;
+}
+.group:hover .metric-shine {
+  animation-duration: 1.6s;
+}
+
+/* Shine glint that sweeps across the WhyUs logo only (masked to its shape) */
+.logo-shine {
+  position: relative;
+  display: inline-block;
+}
+.logo-shine__glint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 62%
+  );
+  background-size: 220% 100%;
+  background-position: 180% 0;
+  -webkit-mask-image: url(/logo.png);
+  mask-image: url(/logo.png);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  pointer-events: none;
+  animation: logoShine 4.5s ease-in-out infinite;
+}
+@keyframes logoShine {
+  0% {
+    background-position: 180% 0;
+  }
+  55%,
+  100% {
+    background-position: -80% 0;
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #ffffff 0%, #cbc2ec 45%, #5E3AA6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ROI simulator range sliders */
+.roi-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+.roi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: #5E3AA6;
+  border: 3px solid #0a0a0f;
+  box-shadow: 0 0 0 1px rgba(94, 58, 166, 0.6), 0 0 16px rgba(94, 58, 166, 0.7);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.roi-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+.roi-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: #5E3AA6;
+  border: 3px solid #0a0a0f;
+  box-shadow: 0 0 16px rgba(94, 58, 166, 0.7);
+  cursor: pointer;
+}
