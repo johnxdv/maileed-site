@@ -19,7 +19,7 @@ const classic = [
 
 export default function WhyUs() {
   return (
-    <section id="pourquoi" className="relative z-10 px-6 py-28">
+    <section id="pourquoi" className="relative z-10 bg-[#EBF4FF]/70 px-6 py-28">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -39,7 +39,7 @@ export default function WhyUs() {
           <motion.div variants={fadeInUp} className="glass-card glass-card--glow p-8">
             <h3 className="mb-6 flex h-8 items-center" aria-label="Maileed">
               <span className="logo-shine">
-                <img src="/logo.png" alt="Maileed" className="h-8 w-auto" />
+                <img src="/logo-mark.png" alt="Maileed" className="h-8 w-auto" />
                 <span className="logo-shine__glint" />
               </span>
             </h3>
@@ -48,13 +48,13 @@ export default function WhyUs() {
                 <motion.li
                   key={item}
                   variants={fadeInUp}
-                  className="flex items-start gap-3 text-sm text-white/80"
+                  className="flex items-start gap-3 text-sm text-[#374151]"
                 >
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/20">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path
                         d="M5 13l4 4L19 7"
-                        stroke="#5E3AA6"
+                        stroke="#3894FF"
                         strokeWidth="3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -70,9 +70,9 @@ export default function WhyUs() {
           {/* Agence classique / SDR interne */}
           <motion.div
             variants={fadeInUp}
-            className="rounded-2xl border border-white/5 bg-white/[0.015] p-8 opacity-70"
+            className="rounded-2xl border border-accent/10 bg-white/55 p-8 opacity-80 backdrop-blur-xl"
           >
-            <h3 className="mb-6 text-xl font-bold text-white/50">
+            <h3 className="mb-6 text-xl font-bold text-[#9CA3AF]">
               Agence classique / SDR interne
             </h3>
             <ul className="space-y-4">
@@ -80,9 +80,9 @@ export default function WhyUs() {
                 <motion.li
                   key={item}
                   variants={fadeInUp}
-                  className="flex items-start gap-3 text-sm text-white/40"
+                  className="flex items-start gap-3 text-sm text-[#9CA3AF]"
                 >
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/5">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F3F4F6]">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path
                         d="M6 6l12 12M18 6L6 18"

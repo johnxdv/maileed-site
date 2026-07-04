@@ -35,7 +35,7 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? 'border-b border-white/5 bg-night/70 backdrop-blur-xl'
+          ? 'border-b border-[#EDEEF1] bg-night/70 backdrop-blur-xl'
           : 'border-b border-transparent bg-transparent'
       }`}
     >
@@ -48,7 +48,7 @@ export default function Navbar() {
               <a
                 href={link.href}
                 onClick={(e) => handleNav(e, link.href)}
-                className="text-sm font-medium text-white/70 transition-colors duration-200 hover:text-white"
+                className="text-sm font-medium text-[#4B5563] transition-colors duration-200 hover:text-[#0A0A1A]"
               >
                 {link.label}
               </a>
@@ -64,13 +64,13 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-white md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#E5E7EB] text-[#0A0A1A] md:hidden"
           aria-label="Menu"
         >
           <span className="relative flex h-4 w-5 flex-col justify-between">
-            <span className={`h-0.5 w-full bg-white transition-transform ${open ? 'translate-y-[7px] rotate-45' : ''}`} />
-            <span className={`h-0.5 w-full bg-white transition-opacity ${open ? 'opacity-0' : ''}`} />
-            <span className={`h-0.5 w-full bg-white transition-transform ${open ? '-translate-y-[7px] -rotate-45' : ''}`} />
+            <span className={`h-0.5 w-full bg-[#0A0A1A] transition-transform ${open ? 'translate-y-[7px] rotate-45' : ''}`} />
+            <span className={`h-0.5 w-full bg-[#0A0A1A] transition-opacity ${open ? 'opacity-0' : ''}`} />
+            <span className={`h-0.5 w-full bg-[#0A0A1A] transition-transform ${open ? '-translate-y-[7px] -rotate-45' : ''}`} />
           </span>
         </button>
       </nav>
@@ -82,7 +82,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden border-t border-white/5 bg-night/90 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-t border-[#EDEEF1] bg-night/90 backdrop-blur-xl md:hidden"
           >
             <ul className="flex flex-col gap-1 px-6 py-4">
               {links.map((link) => (
@@ -90,7 +90,7 @@ export default function Navbar() {
                   <a
                     href={link.href}
                     onClick={(e) => handleNav(e, link.href)}
-                    className="block rounded-lg px-3 py-3 text-sm font-medium text-white/80 hover:bg-white/5"
+                    className="block rounded-lg px-3 py-3 text-sm font-medium text-[#374151] hover:bg-[#F3F4F6]"
                   >
                     {link.label}
                   </a>

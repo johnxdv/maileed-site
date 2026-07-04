@@ -62,18 +62,18 @@ export default function Faq() {
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left sm:px-8"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base font-semibold text-white sm:text-lg">
+                  <span className="text-base font-semibold text-[#0A0A1A] sm:text-lg">
                     {faq.q}
                   </span>
                   <span
                     className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                       isOpen
                         ? 'rotate-45 border-accent bg-accent/20'
-                        : 'border-white/20 bg-white/5'
+                        : 'border-[#D1D5DB] bg-[#F3F4F6]'
                     }`}
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M12 5v14M5 12h14" stroke="#3894FF" strokeWidth="2.5" strokeLinecap="round" />
                     </svg>
                   </span>
                 </button>
@@ -87,7 +87,7 @@ export default function Faq() {
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="px-6 pb-6 text-sm leading-relaxed text-gray-300 sm:px-8 sm:text-base">
+                      <p className="px-6 pb-6 text-sm leading-relaxed text-[#4B5563] sm:px-8 sm:text-base">
                         {faq.a}
                       </p>
                     </motion.div>

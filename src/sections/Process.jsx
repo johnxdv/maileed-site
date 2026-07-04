@@ -58,15 +58,32 @@ const crossEdges = [
 const decoEdges = [
   ['d4', 'in1'], ['d4', 'en1'], ['d1', 'en1'], ['d1', 'ai1'], ['d2', 'en3'], ['d2', 'ai2'], ['d3', 'ex1'], ['d3', 'ai1'],
 ]
+// Every secondary node connects to its nearest main node(s) and to neighbours,
+// so the whole thing reads as one dense interconnected network — no orphans.
 const fillerEdges = [
-  ['f1', 'in1'], ['f1', 'f2'], ['f2', 'en1'], ['f3', 'en1'], ['f3', 'f2'], ['f3', 'd4'],
-  ['f17', 'd1'], ['f17', 'f3'], ['f4', 'd1'], ['f4', 'ai1'], ['f4', 'f13'],
-  ['f5', 'ex1'], ['f5', 'd3'], ['f20', 'ex1'], ['f20', 'out'],
-  ['f13', 'ai1'], ['f13', 'ex1'], ['f11', 'en1'], ['f11', 'ai1'], ['f11', 'f13'],
-  ['f12', 'en3'], ['f12', 'ai2'], ['f12', 'f14'], ['f14', 'ai2'], ['f14', 'ex3'],
-  ['f16', 'ex2'], ['f16', 'out'], ['f15', 'in1'], ['f15', 'en2'], ['f15', 'f12'], ['f19', 'in2'], ['f19', 'en2'],
-  ['f6', 'in2'], ['f7', 'en3'], ['f7', 'd2'], ['f18', 'ai2'], ['f18', 'f8'],
-  ['f8', 'ai2'], ['f9', 'ex3'], ['f9', 'f8'], ['f10', 'out'], ['f10', 'f9'],
+  // top band → input / enrichment / execution
+  ['f1', 'in1'], ['f1', 'd4'], ['f1', 'f2'],
+  ['f2', 'en1'], ['f2', 'f3'], ['f2', 'd4'],
+  ['f3', 'en1'], ['f3', 'd1'], ['f3', 'f17'],
+  ['f17', 'ai1'], ['f17', 'd1'], ['f17', 'en1'],
+  ['f4', 'ai1'], ['f4', 'en1'], ['f4', 'f13'], ['f4', 'd1'],
+  ['f5', 'ex1'], ['f5', 'd3'], ['f5', 'f20'],
+  ['f20', 'out'], ['f20', 'ex1'], ['f20', 'd3'],
+  // middle band → AI / execution cluster
+  ['f11', 'ai1'], ['f11', 'en1'], ['f11', 'f13'], ['f11', 'en2'],
+  ['f13', 'ai1'], ['f13', 'ex1'], ['f13', 'f4'],
+  ['f12', 'ai2'], ['f12', 'en3'], ['f12', 'f14'], ['f12', 'en2'],
+  ['f14', 'ai2'], ['f14', 'ex3'], ['f14', 'f16'],
+  ['f15', 'en2'], ['f15', 'in1'], ['f15', 'f19'],
+  ['f19', 'in2'], ['f19', 'en2'], ['f19', 'in1'],
+  ['f16', 'ex2'], ['f16', 'out'], ['f16', 'ai2'],
+  // bottom band → input / enrichment / execution
+  ['f6', 'in2'], ['f6', 'd4'], ['f6', 'f7'],
+  ['f7', 'en3'], ['f7', 'd2'], ['f7', 'f18'],
+  ['f18', 'ai2'], ['f18', 'd2'], ['f18', 'f8'],
+  ['f8', 'ai2'], ['f8', 'en3'], ['f8', 'f9'],
+  ['f9', 'ex3'], ['f9', 'f10'], ['f9', 'f8'],
+  ['f10', 'out'], ['f10', 'ex3'], ['f10', 'f9'],
 ]
 
 function line(a, b) {
@@ -112,42 +129,42 @@ export default function Process() {
           >
             {/* filler lines (most behind) */}
             {fillerEdges.map(([f, t], i) => (
-              <path key={`f${i}`} d={curve(nodes[f], nodes[t], 22)} stroke="#5E3AA6" strokeOpacity="0.1" strokeWidth="0.8" strokeDasharray="2 4" />
+              <path key={`f${i}`} d={curve(nodes[f], nodes[t], 22)} stroke="#3894FF" strokeOpacity="0.22" strokeWidth="1" strokeDasharray="3 4" />
             ))}
             {/* deco lines */}
             {decoEdges.map(([f, t], i) => (
-              <path key={`d${i}`} d={curve(nodes[f], nodes[t], 18)} stroke="#5E3AA6" strokeOpacity="0.14" strokeWidth="1" strokeDasharray="3 5" />
+              <path key={`d${i}`} d={curve(nodes[f], nodes[t], 18)} stroke="#3894FF" strokeOpacity="0.14" strokeWidth="1" strokeDasharray="3 5" />
             ))}
             {/* cross lines */}
             {crossEdges.map(([f, t], i) => (
-              <path key={`c${i}`} d={curve(nodes[f], nodes[t], 38)} stroke="#5E3AA6" strokeOpacity="0.2" strokeWidth="1.2" />
+              <path key={`c${i}`} d={curve(nodes[f], nodes[t], 38)} stroke="#3894FF" strokeOpacity="0.2" strokeWidth="1.2" />
             ))}
             {/* main lines */}
             {mainEdges.map(([f, t], i) => (
-              <path key={`m${i}`} d={line(nodes[f], nodes[t])} stroke="#5E3AA6" strokeOpacity="0.32" strokeWidth="1.6" />
+              <path key={`m${i}`} d={line(nodes[f], nodes[t])} stroke="#3894FF" strokeOpacity="0.32" strokeWidth="1.6" />
             ))}
 
             {/* moving dots */}
             {mainEdges.map(([f, t], i) => (
-              <circle key={`md${i}`} r="3.2" fill="#7A52CC">
+              <circle key={`md${i}`} r="3.2" fill="#3894FF">
                 <animateMotion dur={`${2.4 + (i % 5) * 0.45}s`} repeatCount="indefinite" path={line(nodes[f], nodes[t])} />
               </circle>
             ))}
             {/* second wave of dots on main edges, offset */}
             {mainEdges.map(([f, t], i) => (
-              <circle key={`md2${i}`} r="2.4" fill="#b39bea" opacity="0.8">
+              <circle key={`md2${i}`} r="2.4" fill="#60A5FA" opacity="0.8">
                 <animateMotion dur={`${3 + (i % 4) * 0.5}s`} repeatCount="indefinite" begin={`${(i % 3) * 0.7}s`} path={line(nodes[f], nodes[t])} />
               </circle>
             ))}
             {/* dots on cross lines */}
             {crossEdges.map(([f, t], i) => (
-              <circle key={`cd${i}`} r="2.2" fill="#7A52CC" opacity="0.7">
+              <circle key={`cd${i}`} r="2.2" fill="#3894FF" opacity="0.7">
                 <animateMotion dur={`${3.4 + i * 0.4}s`} repeatCount="indefinite" path={curve(nodes[f], nodes[t], 38)} />
               </circle>
             ))}
             {/* dots on filler lines — constant subtle movement everywhere */}
             {fillerEdges.map(([f, t], i) => (
-              <circle key={`fd${i}`} r="1.8" fill="#7A52CC" opacity="0.55">
+              <circle key={`fd${i}`} r="1.8" fill="#3894FF" opacity="0.55">
                 <animateMotion dur={`${3.6 + (i % 7) * 0.55}s`} repeatCount="indefinite" begin={`${(i % 5) * 0.6}s`} path={curve(nodes[f], nodes[t], 22)} />
               </circle>
             ))}
@@ -168,7 +185,7 @@ export default function Process() {
             { name: 'Exécution', ids: ['ex1', 'ex2', 'ex3'] },
           ].map((layer) => (
             <Fragment key={layer.name}>
-              <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${layer.highlight ? 'text-accent' : 'text-white/35'}`}>
+              <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${layer.highlight ? 'text-accent' : 'text-[#9CA3AF]'}`}>
                 {layer.name}
               </span>
               <div className="mt-3 flex w-full max-w-sm flex-col gap-3">
@@ -194,7 +211,7 @@ function DiagramNode({ n }) {
   if (n.type === 'filler') {
     return (
       <div className="absolute z-0 -translate-x-1/2 -translate-y-1/2" style={style}>
-        <span className="flex items-center gap-1 whitespace-nowrap rounded border border-accent/15 bg-white/[0.02] px-1.5 py-0.5 text-[8px] font-medium text-white/30 backdrop-blur-sm">
+        <span className="flex items-center gap-1 whitespace-nowrap rounded border border-accent/15 bg-[#F8F9FC] px-1.5 py-0.5 text-[8px] font-medium text-[#9CA3AF] backdrop-blur-sm">
           <span className="h-1 w-1 rounded-full bg-accent/60" />
           {n.label}
         </span>
@@ -205,7 +222,7 @@ function DiagramNode({ n }) {
   if (n.type === 'deco') {
     return (
       <div className="absolute z-0 -translate-x-1/2 -translate-y-1/2" style={style}>
-        <span className="whitespace-nowrap rounded-full border border-accent/20 bg-white/[0.03] px-2.5 py-1 text-[9px] font-medium uppercase tracking-wide text-white/40 backdrop-blur-sm animate-pulseGlow">
+        <span className="whitespace-nowrap rounded-full border border-accent/20 bg-[#F3F4F6] px-2.5 py-1 text-[9px] font-medium uppercase tracking-wide text-[#9CA3AF] backdrop-blur-sm animate-pulseGlow">
           {n.label}
         </span>
       </div>
@@ -221,7 +238,7 @@ function DiagramNode({ n }) {
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/60 bg-accent/25 text-accent">
             <Icon />
           </span>
-          <span className="text-[13px] font-bold leading-tight text-white">{n.label}</span>
+          <span className="text-[13px] font-bold leading-tight text-[#0A0A1A]">{n.label}</span>
         </div>
       </div>
     )
@@ -233,13 +250,13 @@ function DiagramNode({ n }) {
     <div className="group absolute z-10 w-[140px] -translate-x-1/2 -translate-y-1/2" style={style}>
       <Tooltip>{n.desc}</Tooltip>
       <div
-        className={`flex items-center gap-2 rounded-xl border bg-white/[0.04] px-2.5 py-2 backdrop-blur-xl transition-all duration-300 ${
+        className={`flex items-center gap-2 rounded-xl border bg-white/70 px-2.5 py-2 backdrop-blur-xl transition-all duration-300 ${
           ai
             ? 'border-accent/60 text-accent shadow-glow ring-1 ring-accent/40 animate-pulseGlow'
-            : 'border-white/10 text-white/80 hover:border-accent/50 hover:text-accent hover:shadow-glow'
+            : 'border-accent/15 text-[#374151] hover:border-accent/50 hover:text-accent hover:shadow-glow'
         }`}
       >
-        <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${ai ? 'border-accent/50 bg-accent/15' : 'border-white/10 bg-white/5'}`}>
+        <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${ai ? 'border-accent/50 bg-accent/15' : 'border-[#E5E7EB] bg-[#F3F4F6]'}`}>
           <Icon />
         </span>
         <span className="text-[10px] font-medium leading-tight">{n.label}</span>
@@ -250,7 +267,7 @@ function DiagramNode({ n }) {
 
 function Tooltip({ children }) {
   return (
-    <div className="pointer-events-none absolute -top-2 left-1/2 z-30 w-44 -translate-x-1/2 -translate-y-full rounded-lg border border-accent/30 bg-night/95 px-2.5 py-1.5 text-center text-[10px] leading-snug text-white/70 opacity-0 shadow-glow backdrop-blur-xl transition-opacity duration-200 group-hover:opacity-100">
+    <div className="pointer-events-none absolute -top-2 left-1/2 z-30 w-44 -translate-x-1/2 -translate-y-full rounded-lg border border-accent/30 bg-night/95 px-2.5 py-1.5 text-center text-[10px] leading-snug text-[#4B5563] opacity-0 shadow-glow backdrop-blur-xl transition-opacity duration-200 group-hover:opacity-100">
       {children}
     </div>
   )
@@ -260,18 +277,18 @@ function MobileNode({ n, highlight, output }) {
   const Icon = n.icon
   return (
     <div
-      className={`flex items-center gap-3 rounded-xl border bg-white/[0.03] px-3.5 py-3 backdrop-blur-xl ${
+      className={`flex items-center gap-3 rounded-xl border bg-white/70 px-3.5 py-3 backdrop-blur-xl ${
         output
           ? 'border-accent bg-accent/15 shadow-glow ring-1 ring-accent/40'
           : highlight
           ? 'border-accent/60 text-accent shadow-glow ring-1 ring-accent/40'
-          : 'border-white/10 text-white/80'
+          : 'border-accent/15 text-[#374151]'
       }`}
     >
-      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${highlight || output ? 'border-accent/50 bg-accent/15 text-accent' : 'border-white/10 bg-white/5 text-white/80'}`}>
+      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${highlight || output ? 'border-accent/50 bg-accent/15 text-accent' : 'border-[#E5E7EB] bg-[#F3F4F6] text-[#374151]'}`}>
         <Icon />
       </span>
-      <span className={`text-[13px] font-medium leading-tight ${output ? 'font-bold text-white' : ''}`}>{n.label}</span>
+      <span className={`text-[13px] font-medium leading-tight ${output ? 'font-bold text-[#0A0A1A]' : ''}`}>{n.label}</span>
     </div>
   )
 }

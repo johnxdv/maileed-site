@@ -1,6 +1,6 @@
 // Maileed brand mark — a split envelope with a downward chevron flap.
 // Two mirrored bracket halves separated by a central gap.
-export default function MailMark({ className = '', stroke = '#7A52CC' }) {
+export default function MailMark({ className = '', stroke = '#3894FF' }) {
   return (
     <svg
       viewBox="0 0 120 92"

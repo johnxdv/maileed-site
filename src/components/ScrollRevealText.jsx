@@ -28,7 +28,7 @@ export default function ScrollRevealText({ text, className = '' }) {
 }
 
 function Word({ children, progress, range }) {
-  const color = useTransform(progress, range, ['#3f3a52', '#ffffff'])
+  const color = useTransform(progress, range, ['#C9C6D4', '#0A0A1A'])
   return (
     <motion.span style={{ color }} className="transition-colors">
       {children}{' '}

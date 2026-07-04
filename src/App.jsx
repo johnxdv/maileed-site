@@ -1,4 +1,4 @@
-import WaveBackground from './components/WaveBackground'
+import Orbs from './components/Orbs'
 import FloatingLogos from './components/FloatingLogos'
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
@@ -14,7 +14,9 @@ import Footer from './sections/Footer'
 export default function App() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-night">
-      <WaveBackground />
+      <div className="page-bg" aria-hidden="true" />
+      <Orbs />
+      <div className="dot-grid" aria-hidden="true" />
       <FloatingLogos />
 
       {/* Ambient top gradient wash */}

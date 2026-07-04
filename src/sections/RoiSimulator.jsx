@@ -16,7 +16,7 @@ export default function RoiSimulator() {
   const revenue = Math.round(rdv * (closing / 100) * ticket)
 
   return (
-    <section id="simulateur" className="relative z-10 px-6 py-28">
+    <section id="simulateur" className="relative z-10 bg-[#EBF4FF]/70 px-6 py-28">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -63,16 +63,16 @@ export default function RoiSimulator() {
             />
           </div>
 
-          <div className="mt-10 border-t border-white/10 pt-8 text-center">
-            <p className="text-sm uppercase tracking-[0.15em] text-white/45">
+          <div className="mt-10 border-t border-[#E5E7EB] pt-8 text-center">
+            <p className="text-sm uppercase tracking-[0.15em] text-[#9CA3AF]">
               Chiffre d'affaires potentiel / mois
             </p>
-            <p className="mt-3 text-5xl font-extrabold tracking-tight text-accent sm:text-6xl">
+            <p className="accent-glow mt-3 text-5xl font-extrabold tracking-tight sm:text-6xl">
               {eur.format(revenue)}
             </p>
-            <p className="mt-6 text-sm text-white/55">
+            <p className="mt-6 text-sm text-[#6B7280]">
               Nos clients génèrent en moyenne{' '}
-              <span className="font-semibold text-white">43x</span> le montant investi.
+              <span className="font-semibold text-[#0A0A1A]">43x</span> le montant investi.
             </p>
           </div>
         </motion.div>
@@ -85,8 +85,8 @@ function Slider({ label, value, min, max, step, onChange, display, hint }) {
   return (
     <div>
       <div className="mb-3 flex items-baseline justify-between">
-        <span className="text-sm font-medium text-white/70">{label}</span>
-        <span className="text-lg font-bold text-white">{display}</span>
+        <span className="text-sm font-medium text-[#4B5563]">{label}</span>
+        <span className="text-lg font-bold text-[#0A0A1A]">{display}</span>
       </div>
       <input
         type="range"
@@ -97,7 +97,7 @@ function Slider({ label, value, min, max, step, onChange, display, hint }) {
         step={step}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-      {hint && <p className="mt-2 text-xs text-white/35">{hint}</p>}
+      {hint && <p className="mt-2 text-xs text-[#9CA3AF]">{hint}</p>}
     </div>
   )
 }

@@ -8,8 +8,8 @@ export default function AnimatedEnvelope({
   tickPeak = 0.3,
   delay = 0,
   gap = 6,
-  bodyStroke = '#5E3AA6',
-  tickStroke = '#7A52CC',
+  bodyStroke = '#3894FF',
+  tickStroke = '#3894FF',
 }) {
   const DUR = 2.4
   const cycle = { duration: DUR, repeat: Infinity, repeatDelay: gap, delay, ease: 'easeInOut' }

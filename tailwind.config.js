@@ -4,16 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        night: '#0A0A0F',
-        primary: '#1B1039',
-        accent: '#5E3AA6',
+        night: '#FFFFFF',
+        soft: '#F8F9FC',
+        card: '#F3F4F6',
+        line: '#E5E7EB',
+        ink: '#0A0A1A',
+        muted: '#6B7280',
+        primary: '#DBEAFE',
+        accent: '#3894FF',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        glow: '0 0 40px -8px rgba(94, 58, 166, 0.45)',
-        'glow-lg': '0 0 80px -10px rgba(94, 58, 166, 0.55)',
+        glow: '0 4px 24px -6px rgba(56, 148, 255, 0.2)',
+        'glow-lg': '0 14px 44px -10px rgba(56, 148, 255, 0.26)',
       },
       keyframes: {
         float: {

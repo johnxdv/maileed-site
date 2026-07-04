@@ -43,7 +43,7 @@ export default function About() {
 
       <div ref={container} className="relative mx-auto mt-12 max-w-3xl">
         {/* Timeline track */}
-        <div className="absolute left-5 top-2 bottom-2 w-px bg-white/10 md:left-1/2" />
+        <div className="absolute left-5 top-2 bottom-2 w-px bg-[#E5E7EB] md:left-1/2" />
         {/* Animated progress fill */}
         <motion.div
           style={{ scaleY: scrollYProgress }}
@@ -77,8 +77,8 @@ export default function About() {
                     <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
                       {s.indicator}
                     </span>
-                    <h3 className="mt-2 text-lg font-bold text-white">{s.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/60">{s.text}</p>
+                    <h3 className="mt-2 text-lg font-bold text-[#0A0A1A]">{s.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[#6B7280]">{s.text}</p>
                   </div>
                 </div>
               </motion.div>

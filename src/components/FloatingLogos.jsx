@@ -9,19 +9,19 @@ export default function FloatingLogos({ count = 16 }) {
   const items = useMemo(() => {
     const rand = (min, max) => min + Math.random() * (max - min)
     return Array.from({ length: count }, (_, i) => {
-      const opacity = rand(0.08, 0.24)
+      const opacity = rand(0.13, 0.17)
       return {
         id: i,
         left: rand(0, 100),
         top: rand(0, 100),
-        size: rand(18, 58),
+        size: rand(26, 74),
         opacity,
         duration: rand(16, 32),
         delay: rand(0, 12),
         driftX: rand(-150, 150),
         driftY: rand(-120, 120),
         rotate: rand(-26, 26),
-        tickPeak: Math.min(opacity * 2.4, 0.34),
+        tickPeak: Math.min(opacity * 2, 0.4),
         tickDelay: rand(0, 7),
         tickGap: rand(4, 9),
       }
@@ -34,7 +34,7 @@ export default function FloatingLogos({ count = 16 }) {
         <motion.div
           key={it.id}
           className="absolute"
-          style={{ left: `${it.left}%`, top: `${it.top}%`, width: it.size }}
+          style={{ left: `${it.left}%`, top: `${it.top}%`, width: it.size, filter: 'blur(0.7px)' }}
           animate={{
             x: [0, it.driftX, 0],
             y: [0, it.driftY, 0],

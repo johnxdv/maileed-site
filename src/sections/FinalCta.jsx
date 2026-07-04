@@ -3,9 +3,9 @@ import { fadeInUp, staggerContainer, viewport } from '../lib/motion'
 
 export default function FinalCta() {
   return (
-    <section id="contact" className="relative z-10 overflow-hidden px-6 py-32">
+    <section id="contact" className="relative z-10 overflow-hidden bg-[#EBF4FF]/70 px-6 py-32">
       {/* Large violet glow orb */}
-      <div className="glow-orb left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 animate-pulseGlow bg-accent/30" />
+      <div className="glow-orb left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 animate-pulseGlow bg-accent/[0.07]" />
       <div className="glow-orb left-1/2 top-1/2 h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 bg-primary/50" />
 
       <motion.div
@@ -24,7 +24,7 @@ export default function FinalCta() {
 
         <motion.p
           variants={fadeInUp}
-          className="mt-6 max-w-xl text-lg leading-relaxed text-white/65"
+          className="mt-6 max-w-xl text-lg leading-relaxed text-[#6B7280]"
         >
           Réservez un appel de 20 minutes. On vous dit exactement combien de RDV on peut
           générer pour votre business.
@@ -32,7 +32,7 @@ export default function FinalCta() {
 
         {/* Calendly placeholder */}
         <motion.div variants={fadeInUp} className="mt-10 w-full max-w-xl">
-          <div className="flex min-h-[180px] items-center justify-center rounded-2xl border border-dashed border-accent/30 bg-white/[0.03] px-6 py-12 text-center text-sm text-white/40 backdrop-blur-xl">
+          <div className="flex min-h-[180px] items-center justify-center rounded-2xl border border-dashed border-accent/30 bg-white/60 px-6 py-12 text-center text-sm text-[#9CA3AF] backdrop-blur-xl">
             [ Calendly widget will be embedded here ]
           </div>
         </motion.div>
@@ -46,7 +46,7 @@ export default function FinalCta() {
           </a>
         </motion.div>
 
-        <motion.p variants={fadeInUp} className="mt-6 text-sm text-white/45">
+        <motion.p variants={fadeInUp} className="mt-6 text-sm text-[#9CA3AF]">
           Sans engagement · Réponse sous 24h
         </motion.p>
       </motion.div>

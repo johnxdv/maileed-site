@@ -1,6 +1,5 @@
 export default function Logo({ className = '' }) {
-  // Displays the logo file at /public/logo.png exactly as-is — no cropping,
-  // no added text, no modification.
+  // Full Maileed wordmark (blue envelope + dark text), trimmed of empty margins.
   return (
     <a
       href="#hero"
@@ -8,9 +7,9 @@ export default function Logo({ className = '' }) {
       aria-label="Maileed - accueil"
     >
       <img
-        src="/logo.png"
+        src="/logo-mark.png"
         alt="Maileed"
-        className="h-7 w-auto transition-[filter] duration-300 group-hover:drop-shadow-[0_0_14px_rgba(94,58,166,0.7)]"
+        className="h-8 w-auto transition-[filter] duration-300 group-hover:drop-shadow-[0_2px_6px_rgba(56,148,255,0.35)]"
       />
     </a>
   )
