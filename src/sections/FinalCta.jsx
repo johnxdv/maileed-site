@@ -1,7 +1,24 @@
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { fadeInUp, staggerContainer, viewport } from '../lib/motion'
 
+const phrases = [
+  'remplir votre agenda ?',
+  'augmenter votre CA ?',
+  "prendre de l'avance ?",
+  'scaler votre acquisition ?',
+  'générer plus de clients ?',
+  'gagner du temps ?',
+]
+
 export default function FinalCta() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => setIndex((i) => (i + 1) % phrases.length), 2500)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <section id="contact" className="relative z-10 overflow-hidden bg-[#EBF4FF]/70 px-6 py-32">
       {/* Large violet glow orb */}
@@ -17,9 +34,23 @@ export default function FinalCta() {
       >
         <motion.h2
           variants={fadeInUp}
-          className="text-4xl font-extrabold tracking-tight sm:text-6xl"
+          className="w-full text-4xl font-extrabold tracking-tight sm:text-6xl"
         >
-          <span className="text-gradient">Prêt à remplir votre agenda ?</span>
+          <span className="block text-[#0A0A1A]">Prêt à</span>
+          <span className="relative mt-1 block h-[1.3em]">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={index}
+                className="accent-glow absolute inset-0 flex items-center justify-center whitespace-nowrap"
+                initial={{ y: '0.45em', opacity: 0 }}
+                animate={{ y: '0em', opacity: 1 }}
+                exit={{ y: '-0.45em', opacity: 0 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {phrases[index]}
+              </motion.span>
+            </AnimatePresence>
+          </span>
         </motion.h2>
 
         <motion.p
