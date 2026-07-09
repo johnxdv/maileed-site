@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer, viewport } from '../lib/motion'
 
@@ -98,6 +97,53 @@ function curve(a, b, bend) {
   return `M ${a.x} ${a.y} Q ${mx + (-dy / len) * bend} ${my + (dx / len) * bend} ${b.x} ${b.y}`
 }
 
+// Small envelope icon that travels along a connecting line (replaces the dots).
+const ENV_W = 12
+function Envelope({ d, dur, begin = '0s' }) {
+  const w = ENV_W
+  const h = ENV_W * 0.78
+  return (
+    <g className="travel-env" fill="none" stroke="#3894FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx="1.6" />
+      <path d={`M${-w / 2} ${-h / 2} L0 1 L${w / 2} ${-h / 2}`} />
+      <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={d} />
+    </g>
+  )
+}
+
+/* ---------- Mobile network layout (portrait) ---------- */
+const MW = 360
+const MH = 1320
+const mLayout = {
+  in1: [95, 90], in2: [265, 200], en1: [95, 310], en2: [265, 420], en3: [95, 530],
+  ai1: [265, 640], ai2: [95, 750], ex1: [265, 860], ex2: [95, 970], ex3: [265, 1080],
+  out: [180, 1235],
+  d4: [180, 40], f1: [180, 150], d1: [180, 255], f11: [180, 365], d2: [180, 475],
+  f13: [180, 585], f4: [180, 695], f8: [180, 805], d3: [180, 915], f16: [180, 1025], f20: [180, 1140],
+}
+const mMainEdges = [
+  ['in1', 'in2'], ['in2', 'en1'], ['en1', 'en2'], ['en2', 'en3'], ['en3', 'ai1'],
+  ['ai1', 'ai2'], ['ai2', 'ex1'], ['ex1', 'ex2'], ['ex2', 'ex3'], ['ex3', 'out'],
+  ['in1', 'en1'], ['en2', 'ai1'], ['en3', 'ai2'], ['ai1', 'ex1'], ['ai2', 'ex2'], ['ex1', 'out'], ['ex2', 'out'],
+]
+const mBadgeEdges = [
+  ['d4', 'in1'], ['d4', 'in2'], ['f1', 'in1'], ['f1', 'in2'], ['d1', 'in2'], ['d1', 'en1'],
+  ['f11', 'en1'], ['f11', 'en2'], ['d2', 'en2'], ['d2', 'en3'], ['f13', 'en3'], ['f13', 'ai1'],
+  ['f4', 'ai1'], ['f4', 'ai2'], ['f8', 'ai2'], ['f8', 'ex1'], ['d3', 'ex1'], ['d3', 'ex2'],
+  ['f16', 'ex2'], ['f16', 'ex3'], ['f20', 'ex3'], ['f20', 'out'],
+]
+function mPath(a, b, bend = 0) {
+  const [ax, ay] = a
+  const [bx, by] = b
+  if (!bend) return `M ${ax} ${ay} L ${bx} ${by}`
+  const mx = (ax + bx) / 2
+  const my = (ay + by) / 2
+  const dx = bx - ax
+  const dy = by - ay
+  const len = Math.hypot(dx, dy) || 1
+  return `M ${ax} ${ay} Q ${mx + (-dy / len) * bend} ${my + (dx / len) * bend} ${bx} ${by}`
+}
+
 export default function Process() {
   return (
     <section id="process" className="relative z-10 overflow-hidden px-6 py-28">
@@ -123,7 +169,7 @@ export default function Process() {
         >
           <svg
             viewBox={`0 0 ${VW} ${VH}`}
-            className="absolute inset-0 h-full w-full"
+            className="process-svg absolute inset-0 h-full w-full"
             fill="none"
             aria-hidden="true"
           >
@@ -144,29 +190,20 @@ export default function Process() {
               <path key={`m${i}`} d={line(nodes[f], nodes[t])} stroke="#3894FF" strokeOpacity="0.32" strokeWidth="1.6" />
             ))}
 
-            {/* moving dots */}
+            {/* traveling envelopes — main edges, two staggered waves per line */}
             {mainEdges.map(([f, t], i) => (
-              <circle key={`md${i}`} r="3.2" fill="#3894FF">
-                <animateMotion dur={`${2.4 + (i % 5) * 0.45}s`} repeatCount="indefinite" path={line(nodes[f], nodes[t])} />
-              </circle>
+              <Envelope key={`me${i}`} d={line(nodes[f], nodes[t])} dur={`${2.4 + (i % 5) * 0.45}s`} />
             ))}
-            {/* second wave of dots on main edges, offset */}
             {mainEdges.map(([f, t], i) => (
-              <circle key={`md2${i}`} r="2.4" fill="#60A5FA" opacity="0.8">
-                <animateMotion dur={`${3 + (i % 4) * 0.5}s`} repeatCount="indefinite" begin={`${(i % 3) * 0.7}s`} path={line(nodes[f], nodes[t])} />
-              </circle>
+              <Envelope key={`me2${i}`} d={line(nodes[f], nodes[t])} dur={`${3 + (i % 4) * 0.5}s`} begin={`${(i % 3) * 0.7}s`} />
             ))}
-            {/* dots on cross lines */}
+            {/* envelopes on cross lines */}
             {crossEdges.map(([f, t], i) => (
-              <circle key={`cd${i}`} r="2.2" fill="#3894FF" opacity="0.7">
-                <animateMotion dur={`${3.4 + i * 0.4}s`} repeatCount="indefinite" path={curve(nodes[f], nodes[t], 38)} />
-              </circle>
+              <Envelope key={`ce${i}`} d={curve(nodes[f], nodes[t], 38)} dur={`${3.4 + i * 0.4}s`} begin={`${(i % 2) * 0.6}s`} />
             ))}
-            {/* dots on filler lines — constant subtle movement everywhere */}
+            {/* envelopes on filler lines — constant subtle movement everywhere */}
             {fillerEdges.map(([f, t], i) => (
-              <circle key={`fd${i}`} r="1.8" fill="#3894FF" opacity="0.55">
-                <animateMotion dur={`${3.6 + (i % 7) * 0.55}s`} repeatCount="indefinite" begin={`${(i % 5) * 0.6}s`} path={curve(nodes[f], nodes[t], 22)} />
-              </circle>
+              <Envelope key={`fe${i}`} d={curve(nodes[f], nodes[t], 22)} dur={`${3.6 + (i % 7) * 0.55}s`} begin={`${(i % 5) * 0.6}s`} />
             ))}
           </svg>
 
@@ -176,30 +213,39 @@ export default function Process() {
           ))}
         </motion.div>
 
-        {/* Mobile compact stack */}
-        <div className="mt-12 flex flex-col items-center lg:hidden">
-          {[
-            { name: 'Input', ids: ['in1', 'in2'] },
-            { name: 'Enrichissement', ids: ['en1', 'en2', 'en3'] },
-            { name: 'IA', ids: ['ai1', 'ai2'], highlight: true },
-            { name: 'Exécution', ids: ['ex1', 'ex2', 'ex3'] },
-          ].map((layer) => (
-            <Fragment key={layer.name}>
-              <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${layer.highlight ? 'text-accent' : 'text-[#9CA3AF]'}`}>
-                {layer.name}
-              </span>
-              <div className="mt-3 flex w-full max-w-sm flex-col gap-3">
-                {layer.ids.map((id) => (
-                  <MobileNode key={id} n={nodes[id]} highlight={layer.highlight} />
-                ))}
-              </div>
-              <VConnector />
-            </Fragment>
+        {/* Mobile network (portrait, interconnected) */}
+        <motion.div
+          variants={fadeInUp}
+          className="relative mx-auto mt-10 w-full max-w-[360px] lg:hidden"
+          style={{ aspectRatio: `${MW} / ${MH}` }}
+        >
+          <svg
+            viewBox={`0 0 ${MW} ${MH}`}
+            className="process-svg absolute inset-0 h-full w-full"
+            fill="none"
+            aria-hidden="true"
+          >
+            {/* badge lines */}
+            {mBadgeEdges.map(([f, t], i) => (
+              <path key={`mbl${i}`} d={mPath(mLayout[f], mLayout[t], 14)} stroke="#3894FF" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" />
+            ))}
+            {/* main lines */}
+            {mMainEdges.map(([f, t], i) => (
+              <path key={`mml${i}`} d={mPath(mLayout[f], mLayout[t], 20)} stroke="#3894FF" strokeOpacity="0.32" strokeWidth="1.4" />
+            ))}
+            {/* traveling envelopes */}
+            {mMainEdges.map(([f, t], i) => (
+              <Envelope key={`mme${i}`} d={mPath(mLayout[f], mLayout[t], 20)} dur={`${2.6 + (i % 5) * 0.5}s`} begin={`${(i % 3) * 0.5}s`} />
+            ))}
+            {mBadgeEdges.map(([f, t], i) => (
+              <Envelope key={`mbe${i}`} d={mPath(mLayout[f], mLayout[t], 14)} dur={`${3.4 + (i % 6) * 0.5}s`} begin={`${(i % 4) * 0.6}s`} />
+            ))}
+          </svg>
+
+          {Object.keys(mLayout).map((id) => (
+            <MobileNetNode key={id} n={nodes[id]} pos={mLayout[id]} />
           ))}
-          <div className="w-full max-w-sm">
-            <MobileNode n={nodes.out} output />
-          </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   )
@@ -273,34 +319,38 @@ function Tooltip({ children }) {
   )
 }
 
-function MobileNode({ n, highlight, output }) {
-  const Icon = n.icon
-  return (
-    <div
-      className={`flex items-center gap-3 rounded-xl border bg-white/70 px-3.5 py-3 backdrop-blur-xl ${
-        output
-          ? 'border-accent bg-accent/15 shadow-glow ring-1 ring-accent/40'
-          : highlight
-          ? 'border-accent/60 text-accent shadow-glow ring-1 ring-accent/40'
-          : 'border-accent/15 text-[#374151]'
-      }`}
-    >
-      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${highlight || output ? 'border-accent/50 bg-accent/15 text-accent' : 'border-[#E5E7EB] bg-[#F3F4F6] text-[#374151]'}`}>
-        <Icon />
-      </span>
-      <span className={`text-[13px] font-medium leading-tight ${output ? 'font-bold text-[#0A0A1A]' : ''}`}>{n.label}</span>
-    </div>
-  )
-}
+function MobileNetNode({ n, pos }) {
+  const style = { left: `${(pos[0] / MW) * 100}%`, top: `${(pos[1] / MH) * 100}%` }
 
-function VConnector() {
+  if (n.type === 'deco' || n.type === 'filler') {
+    return (
+      <div className="absolute z-10 -translate-x-1/2 -translate-y-1/2" style={style}>
+        <span className="block max-w-[86px] whitespace-normal rounded-full border border-accent/25 bg-white/80 px-2 py-1 text-center text-[8px] font-medium leading-tight text-[#6B7280] backdrop-blur-sm">
+          {n.label}
+        </span>
+      </div>
+    )
+  }
+
+  const Icon = n.icon
+  const ai = n.type === 'ai'
+  const output = n.type === 'output'
   return (
-    <div className="relative my-3 h-9 w-px bg-gradient-to-b from-accent/40 to-accent/10">
-      <motion.span
-        className="absolute -left-[3px] top-0 h-1.5 w-1.5 rounded-full bg-accent"
-        animate={{ y: [0, 36], opacity: [0, 1, 0] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-      />
+    <div className="absolute z-20 w-[132px] -translate-x-1/2 -translate-y-1/2" style={style}>
+      <div
+        className={`flex items-center gap-2 rounded-xl border bg-white/75 px-2 py-1.5 backdrop-blur-xl ${
+          output
+            ? 'border-accent bg-accent/15 shadow-glow ring-1 ring-accent/40'
+            : ai
+            ? 'border-accent/60 text-accent shadow-glow ring-1 ring-accent/40 animate-pulseGlow'
+            : 'border-accent/15 text-[#374151]'
+        }`}
+      >
+        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border ${ai || output ? 'border-accent/50 bg-accent/15 text-accent' : 'border-[#E5E7EB] bg-[#F3F4F6] text-[#374151]'}`}>
+          <Icon />
+        </span>
+        <span className={`text-[9px] font-medium leading-tight ${output ? 'font-bold text-[#0A0A1A]' : ''}`}>{n.label}</span>
+      </div>
     </div>
   )
 }

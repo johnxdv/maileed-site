@@ -24,6 +24,10 @@ const faqs = [
     a: 'Très peu. Un call de 30 minutes au démarrage pour définir votre ICP, et vous recevez vos RDV. On gère tout le reste.',
   },
   {
+    q: 'Quels sont vos tarifs ?',
+    a: "Comme chez un bon garagiste : sans diagnostic, impossible de donner un prix. Chaque entreprise a un potentiel différent, un ICP différent, des objectifs différents. C'est précisément pour ça qu'on commence par un appel gratuit, pour analyser votre situation et vous proposer une offre qui vous est totalement adaptée.",
+  },
+  {
     q: "Pourquoi l'IA change-t-elle tout à la prospection ?",
     a: "L'IA nous permet de personnaliser chaque email à partir de signaux réels (activité LinkedIn, poste, contexte) — ce qu'aucun humain ne pourrait faire à grande échelle. C'est ce qui explique nos taux de réponse bien au-dessus de la moyenne.",
   },

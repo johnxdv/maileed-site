@@ -6,17 +6,17 @@ const steps = [
   {
     indicator: '2024',
     title: 'Les débuts',
-    text: "En 2024, nous étions une agence marketing comme tant d'autres, à la recherche de leviers vraiment efficaces.",
+    text: "Nous étions une agence de marketing et de copywriting. Compétents, mais sans réelle différenciation dans un marché saturé. Comme des dizaines d'autres agences.",
   },
   {
     indicator: '02',
-    title: 'Le déclic',
-    text: "En testant l'IA appliquée à la prospection B2B, nous avons obtenu des résultats que rien d'autre n'approchait.",
+    title: 'Le tournant',
+    text: "Nous avons investi massivement dans des technologies IA, testé des systèmes aux USA, étudié les meilleures infrastructures outreach au monde. Après des mois de R&D, nous avons mis en place un système totalement nouveau en France.",
   },
   {
     indicator: '03',
-    title: 'Le tournant',
-    text: "Nous avons tout misé sur cette approche. Maileed est né de cette conviction : l'outreach piloté par l'IA change les règles du jeu.",
+    title: 'La décision',
+    text: "Les résultats ont été énormes. Nous avons alors décidé de nous consacrer à plein temps à cette approche, et de la mettre au service de la communauté francophone qui n'y avait pas encore accès.",
   },
 ]
 

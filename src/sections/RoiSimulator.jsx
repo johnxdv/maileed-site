@@ -72,7 +72,7 @@ export default function RoiSimulator() {
             </p>
             <p className="mt-6 text-sm text-[#6B7280]">
               Nos clients génèrent en moyenne{' '}
-              <span className="font-semibold text-[#0A0A1A]">43x</span> le montant investi.
+              <span className="font-semibold text-[#0A0A1A]">24x</span> le montant investi.
             </p>
           </div>
         </motion.div>

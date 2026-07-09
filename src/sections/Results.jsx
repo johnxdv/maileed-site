@@ -4,7 +4,7 @@ import AnimatedCounter from '../components/AnimatedCounter'
 import ScrollRevealText from '../components/ScrollRevealText'
 
 const stats = [
-  { value: 43, suffix: 'x', label: 'ROI moyen généré' },
+  { value: 24, suffix: 'x', label: 'ROI moyen généré' },
   { value: 10000, suffix: '+', label: 'Emails envoyés' },
   { value: 4, suffix: '/5', label: 'Prospects qualifiés closés' },
   { value: 76, suffix: '%', label: "Taux d'ouverture moyen" },
@@ -67,10 +67,10 @@ export default function Results() {
         <motion.figure variants={fadeInUp} className="mx-auto mt-20 max-w-3xl text-center">
           <span className="block text-5xl font-bold leading-none text-accent/40">“</span>
           <blockquote className="-mt-4 text-2xl font-medium italic leading-relaxed sm:text-3xl">
-            <ScrollRevealText text="L'email reste sous-exploité par la majorité des entreprises B2B — c'est exactement ce qui en fait un levier aussi puissant aujourd'hui." />
+            <ScrollRevealText text="L'advanced AI emailing reste sous-exploité par la majorité des entreprises B2B, c'est exactement ce qui en fait un levier aussi puissant aujourd'hui." />
           </blockquote>
           <figcaption className="mt-6 text-sm text-[#9CA3AF]">
-            — Client Maileed, secteur immobilier
+            — Thomas : Client Maileed, secteur immobilier
           </figcaption>
         </motion.figure>
       </motion.div>

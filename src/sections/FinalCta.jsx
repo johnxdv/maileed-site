@@ -34,14 +34,15 @@ export default function FinalCta() {
       >
         <motion.h2
           variants={fadeInUp}
-          className="w-full text-4xl font-extrabold tracking-tight sm:text-6xl"
+          className="w-full max-w-full font-extrabold leading-tight tracking-tight"
+          style={{ fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' }}
         >
           <span className="block text-[#0A0A1A]">Prêt à</span>
-          <span className="relative mt-1 block h-[1.3em]">
+          <span className="relative mt-1 block h-[2.7em] w-full max-w-[100vw] overflow-hidden sm:h-[1.3em]">
             <AnimatePresence mode="wait">
               <motion.span
                 key={index}
-                className="accent-glow absolute inset-0 flex items-center justify-center whitespace-nowrap"
+                className="phrase-flash accent-glow absolute inset-0 flex items-center justify-center whitespace-normal px-2 text-center leading-tight sm:whitespace-nowrap sm:px-0"
                 initial={{ y: '0.45em', opacity: 0 }}
                 animate={{ y: '0em', opacity: 1 }}
                 exit={{ y: '-0.45em', opacity: 0 }}
@@ -57,8 +58,7 @@ export default function FinalCta() {
           variants={fadeInUp}
           className="mt-6 max-w-xl text-lg leading-relaxed text-[#6B7280]"
         >
-          Réservez un appel de 20 minutes. On vous dit exactement combien de RDV on peut
-          générer pour votre business.
+          Réservez un appel de 20 minutes. Analysons ensemble votre potentiel de croissance.
         </motion.p>
 
         {/* Calendly placeholder */}
@@ -78,7 +78,7 @@ export default function FinalCta() {
         </motion.div>
 
         <motion.p variants={fadeInUp} className="mt-6 text-sm text-[#9CA3AF]">
-          Sans engagement · Réponse sous 24h
+          Sans engagement · Audit gratuit
         </motion.p>
       </motion.div>
     </section>

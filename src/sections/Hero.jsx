@@ -32,7 +32,8 @@ export default function Hero() {
           className="text-balance text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
         >
           <span className="text-gradient">
-            Vos prochains clients arrivent dans votre boîte mail.
+            Vos prochains clients ne sont qu'à un{' '}
+            <span className="hero-email">email.</span>
           </span>
         </motion.h1>
 

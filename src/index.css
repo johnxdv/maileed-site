@@ -170,6 +170,41 @@ body {
   color: #3894ff;
 }
 
+/* Hero highlighted word "email." — metallic blue text gradient, no glow */
+.hero-email {
+  display: inline-block;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.05em;
+  background: linear-gradient(135deg, #3894ff 0%, #60a5fa 50%, #3894ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Flash glow on each rotating-phrase appearance (fades to the normal glow) */
+@keyframes phraseGlow {
+  0% {
+    text-shadow: 0 0 30px rgba(56, 148, 255, 0.9), 0 0 60px rgba(56, 148, 255, 0.6);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(56, 148, 255, 0.5), 0 0 40px rgba(56, 148, 255, 0.25);
+  }
+}
+.phrase-flash {
+  animation: phraseGlow 0.8s ease-out;
+}
+
+/* Envelopes traveling along process-diagram lines; brighten on hover */
+.travel-env {
+  opacity: 0.35;
+  transition: opacity 0.25s ease;
+}
+.process-svg:hover .travel-env {
+  opacity: 1;
+}
+
 /* Shine glint that sweeps across the WhyUs logo only (masked to its shape) */
 .logo-shine {
   position: relative;
