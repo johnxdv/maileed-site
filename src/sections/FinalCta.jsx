@@ -103,14 +103,23 @@ export default function FinalCta() {
 
         {/* Cal.com inline embed */}
         <motion.div variants={fadeInUp} className="mt-10 w-full max-w-xl">
-          <div style={{ overflow: 'visible', borderRadius: '16px', maxWidth: '100%', display: 'flex', justifyContent: 'center' }}>
+          <div
+            style={{
+              overflow: 'visible',
+              borderRadius: '16px',
+              maxWidth: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              padding: isMobile ? '0 12px' : 0,
+            }}
+          >
             <div
               id="my-cal-inline-30min"
               style={{
                 width: '100%',
-                minWidth: '1100px',
-                height: '600px',
-                overflow: 'scroll',
+                minWidth: isMobile ? '100%' : '1100px',
+                height: isMobile ? '660px' : '520px',
+                overflow: isMobile ? 'visible' : 'hidden',
                 borderRadius: '12px',
                 margin: '0 auto',
               }}
@@ -118,16 +127,7 @@ export default function FinalCta() {
           </div>
         </motion.div>
 
-        <motion.div variants={fadeInUp} className="mt-8">
-          <a
-            href="mailto:contact@maileed.com?subject=Demande%20d'appel%20gratuit"
-            className="btn-primary px-9 py-4 text-base"
-          >
-            Réserver mon appel gratuit →
-          </a>
-        </motion.div>
-
-        <motion.p variants={fadeInUp} className="mt-6 text-sm text-[#9CA3AF]">
+        <motion.p variants={fadeInUp} className="mt-3 text-sm text-[#9CA3AF]">
           Sans engagement · Audit gratuit
         </motion.p>
       </motion.div>
