@@ -16,7 +16,7 @@ export default function RoiSimulator() {
   const revenue = Math.round(rdv * (closing / 100) * ticket)
 
   return (
-    <section id="simulateur" className="relative z-10 bg-[#EBF4FF]/70 px-6 py-28">
+    <section id="simulateur" className="section-tint relative z-10 px-6 py-28">
       <motion.div
         variants={staggerContainer}
         initial="hidden"

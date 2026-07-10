@@ -2,7 +2,7 @@ import Logo from '../components/Logo'
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-[#E5E7EB] bg-[#F3F4F6] px-6 py-10">
+    <footer className="relative z-10 bg-[#F3F4F6] px-6 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
         <Logo />
 

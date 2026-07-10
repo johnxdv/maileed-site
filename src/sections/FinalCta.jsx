@@ -20,7 +20,7 @@ export default function FinalCta() {
   }, [])
 
   return (
-    <section id="contact" className="relative z-10 overflow-hidden bg-[#EBF4FF]/70 px-6 py-32">
+    <section id="contact" className="section-tint relative z-10 overflow-hidden px-6 py-32">
       {/* Large violet glow orb */}
       <div className="glow-orb left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 animate-pulseGlow bg-accent/[0.07]" />
       <div className="glow-orb left-1/2 top-1/2 h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 bg-primary/50" />

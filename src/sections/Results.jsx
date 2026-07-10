@@ -12,7 +12,7 @@ const stats = [
 
 export default function Results() {
   return (
-    <section id="resultats" className="relative z-10 bg-[#EBF4FF]/70 px-6 py-28">
+    <section id="resultats" className="section-tint relative z-10 px-6 py-28">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
