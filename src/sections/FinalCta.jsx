@@ -13,10 +13,32 @@ const phrases = [
 
 export default function FinalCta() {
   const [index, setIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  )
 
   useEffect(() => {
     const id = setInterval(() => setIndex((i) => (i + 1) % phrases.length), 2500)
     return () => clearInterval(id)
+  }, [])
+
+  // Track viewport width so the Calendly widget can be taller on mobile,
+  // giving the full booking flow room to render without inner scrolling.
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  // Load the Calendly inline-widget script and remove it on unmount.
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
   }, [])
 
   return (
@@ -61,11 +83,13 @@ export default function FinalCta() {
           Réservez un appel de 20 minutes. Analysons ensemble votre potentiel de croissance.
         </motion.p>
 
-        {/* Calendly placeholder */}
+        {/* Calendly inline widget */}
         <motion.div variants={fadeInUp} className="mt-10 w-full max-w-xl">
-          <div className="flex min-h-[180px] items-center justify-center rounded-2xl border border-dashed border-accent/30 bg-white/60 px-6 py-12 text-center text-sm text-[#9CA3AF] backdrop-blur-xl">
-            [ Calendly widget will be embedded here ]
-          </div>
+          <div
+            className="calendly-inline-widget"
+            data-url="https://calendly.com/maileed/30min"
+            style={{ minWidth: '320px', height: '700px' }}
+          ></div>
         </motion.div>
 
         <motion.div variants={fadeInUp} className="mt-8">
