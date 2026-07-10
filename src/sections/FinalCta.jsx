@@ -103,7 +103,7 @@ export default function FinalCta() {
 
         {/* Cal.com inline embed */}
         <motion.div variants={fadeInUp} className="mt-10 w-full max-w-xl">
-          <div style={{ overflow: 'visible', borderRadius: '16px', maxWidth: '100%' }}>
+          <div style={{ overflow: 'visible', borderRadius: '16px', maxWidth: '100%', display: 'flex', justifyContent: 'center' }}>
             <div
               id="my-cal-inline-30min"
               style={{
@@ -112,6 +112,7 @@ export default function FinalCta() {
                 height: '600px',
                 overflow: 'scroll',
                 borderRadius: '12px',
+                margin: '0 auto',
               }}
             ></div>
           </div>
