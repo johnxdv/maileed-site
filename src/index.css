@@ -196,6 +196,16 @@ body {
   color: transparent;
 }
 
+/* Rotating CTA phrases — clean blue gradient text, no glow or shadow artifacts */
+.phrase-gradient {
+  font-weight: 800;
+  background: linear-gradient(135deg, #3894ff 0%, #60a5fa 60%, #3894ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 /* Flash glow on each rotating-phrase appearance (fades to the normal glow) */
 @keyframes phraseGlow {
   0% {
