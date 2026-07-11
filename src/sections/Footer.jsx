@@ -1,14 +1,38 @@
+import { useState } from 'react'
 import Logo from '../components/Logo'
+import LegalModal from '../components/LegalModal'
+import { mentionsLegales, politiqueConfidentialite } from '../data/legal'
 
 export default function Footer() {
+  const [showMentions, setShowMentions] = useState(false)
+  const [showConfidentialite, setShowConfidentialite] = useState(false)
+
   return (
     <footer className="relative z-10 bg-[#F3F4F6] px-6 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
         <Logo />
 
-        <p className="text-sm text-[#9CA3AF]">
-          © 2026 Maileed. Tous droits réservés.
-        </p>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-sm text-[#9CA3AF]">
+            © 2026 Maileed. Tous droits réservés.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            <button
+              type="button"
+              onClick={() => setShowMentions(true)}
+              className="text-sm text-[#9CA3AF] underline underline-offset-2 transition-colors hover:text-[#6B7280]"
+            >
+              Mentions légales
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowConfidentialite(true)}
+              className="text-sm text-[#9CA3AF] underline underline-offset-2 transition-colors hover:text-[#6B7280]"
+            >
+              Politique de confidentialité
+            </button>
+          </div>
+        </div>
 
         <a
           href="https://www.linkedin.com/"
@@ -22,6 +46,17 @@ export default function Footer() {
           </svg>
         </a>
       </div>
+
+      <LegalModal
+        open={showMentions}
+        onClose={() => setShowMentions(false)}
+        content={mentionsLegales}
+      />
+      <LegalModal
+        open={showConfidentialite}
+        onClose={() => setShowConfidentialite(false)}
+        content={politiqueConfidentialite}
+      />
     </footer>
   )
 }
