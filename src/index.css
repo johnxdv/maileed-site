@@ -196,6 +196,42 @@ body {
   color: transparent;
 }
 
+/* Slow, unsynchronised drift trajectories for the floating background bubbles */
+@keyframes bubbleDrift1 {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(300px, 210px); }
+  100% { transform: translate(-180px, 350px); }
+}
+@keyframes bubbleDrift2 {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-360px, 200px); }
+  100% { transform: translate(210px, -260px); }
+}
+@keyframes bubbleDrift3 {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(320px, -300px); }
+  100% { transform: translate(-260px, -140px); }
+}
+@keyframes bubbleDrift4 {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-240px, -280px); }
+  100% { transform: translate(330px, 160px); }
+}
+@keyframes bubbleDrift5 {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(260px, 240px); }
+  100% { transform: translate(-360px, 110px); }
+}
+
+/* Discreet vertical oscillation for the end-of-video down arrow */
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(7px); }
+}
+.arrow-bounce {
+  animation: arrowBounce 1.6s ease-in-out infinite;
+}
+
 /* Rotating CTA phrases — clean blue gradient text, no glow or shadow artifacts */
 .phrase-gradient {
   font-weight: 800;

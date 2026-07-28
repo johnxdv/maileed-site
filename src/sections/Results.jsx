@@ -5,7 +5,7 @@ import ScrollRevealText from '../components/ScrollRevealText'
 
 const stats = [
   { value: 24, suffix: 'x', label: 'ROI moyen généré' },
-  { value: 10000, suffix: '+', label: 'Emails envoyés' },
+  { value: 25000, suffix: '+', label: 'Emails envoyés' },
   { value: 4, suffix: '/5', label: 'Prospects qualifiés closés' },
   { value: 76, suffix: '%', label: "Taux d'ouverture moyen" },
 ]

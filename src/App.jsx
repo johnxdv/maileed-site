@@ -1,5 +1,4 @@
-import Orbs from './components/Orbs'
-import FloatingLogos from './components/FloatingLogos'
+import BubbleBackground from './components/BubbleBackground'
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import Results from './sections/Results'
@@ -14,20 +13,13 @@ import Footer from './sections/Footer'
 export default function App() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-night">
-      <div className="page-bg" aria-hidden="true" />
-      <Orbs />
+      {/* Floating blue bubbles over the plain white background */}
+      <BubbleBackground />
       <div className="dot-grid" aria-hidden="true" />
-      <FloatingLogos />
-
-      {/* Ambient top gradient wash */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[600px] bg-gradient-to-b from-primary/30 via-night/0 to-transparent"
-        aria-hidden="true"
-      />
 
       <Navbar />
 
-      <main className="relative">
+      <main className="relative z-10">
         <Hero />
         <Results />
         <Process />

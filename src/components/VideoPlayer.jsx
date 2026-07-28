@@ -36,6 +36,12 @@ const ExitFullscreenIcon = ({ size = 20 }) => (
   </svg>
 )
 
+const ChevronDownIcon = ({ size = 28 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+)
+
 // Seconds -> "MM:SS" (0:00 fallback for NaN/Infinity before metadata loads).
 const formatTime = (s) => {
   if (!Number.isFinite(s) || s < 0) s = 0
@@ -58,6 +64,7 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
   const [selectedLevel, setSelectedLevel] = useState(-1) // -1 = Auto
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [hasEnded, setHasEnded] = useState(false)
   const [playSrc, setPlaySrc] = useState(null) // resolved 1080p sub-playlist
 
   // Resolve the 1080p sub-playlist from the master playlist and use it as the
@@ -147,8 +154,13 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
     const onPlay = () => {
       setIsPlaying(true)
       setStarted(true) // hide the poster overlay/big play button as soon as it plays
+      setHasEnded(false) // clear the end-of-video CTA when (re)playing
     }
     const onPause = () => setIsPlaying(false)
+    const onEnded = () => {
+      setIsPlaying(false)
+      setHasEnded(true)
+    }
     const onTime = () => {
       setCurrentTime(video.currentTime)
       if (video.duration) setProgress(video.currentTime / video.duration)
@@ -156,30 +168,42 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
     const onDuration = () => setDuration(video.duration || 0)
     video.addEventListener('play', onPlay)
     video.addEventListener('pause', onPause)
+    video.addEventListener('ended', onEnded)
     video.addEventListener('timeupdate', onTime)
     video.addEventListener('loadedmetadata', onDuration)
     video.addEventListener('durationchange', onDuration)
     return () => {
       video.removeEventListener('play', onPlay)
       video.removeEventListener('pause', onPause)
+      video.removeEventListener('ended', onEnded)
       video.removeEventListener('timeupdate', onTime)
       video.removeEventListener('loadedmetadata', onDuration)
       video.removeEventListener('durationchange', onDuration)
     }
   }, [])
 
-  // Track fullscreen state.
+  // Track fullscreen state — covers the Fullscreen API (Android/desktop) and
+  // iOS Safari's native video fullscreen (webkitbegin/endfullscreen).
   useEffect(() => {
-    const onFsChange = () =>
-      setIsFullscreen(document.fullscreenElement === containerRef.current)
+    const video = videoRef.current
+    const onFsChange = () => setIsFullscreen(!!document.fullscreenElement)
+    const onBegin = () => setIsFullscreen(true)
+    const onEnd = () => setIsFullscreen(false)
     document.addEventListener('fullscreenchange', onFsChange)
-    return () => document.removeEventListener('fullscreenchange', onFsChange)
+    video?.addEventListener('webkitbeginfullscreen', onBegin)
+    video?.addEventListener('webkitendfullscreen', onEnd)
+    return () => {
+      document.removeEventListener('fullscreenchange', onFsChange)
+      video?.removeEventListener('webkitbeginfullscreen', onBegin)
+      video?.removeEventListener('webkitendfullscreen', onEnd)
+    }
   }, [])
 
   const togglePlay = () => {
     const video = videoRef.current
     if (!video) return
     if (video.paused) {
+      if (video.ended) video.currentTime = 0 // replay from the start after the CTA
       setStarted(true)
       video.play()
     } else {
@@ -202,15 +226,40 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
   }
 
   const toggleFullscreen = () => {
-    const container = containerRef.current
     const video = videoRef.current
+    if (!video) return
+
+    // Already fullscreen (Android/desktop) → exit and release the orientation.
     if (document.fullscreenElement) {
       document.exitFullscreen()
-    } else if (container?.requestFullscreen) {
-      container.requestFullscreen()
-    } else if (video?.webkitEnterFullscreen) {
-      // iOS Safari only supports fullscreen on the <video> element itself.
+      try {
+        screen.orientation?.unlock?.()
+      } catch {
+        /* not supported — ignore */
+      }
+      return
+    }
+
+    // iOS Safari: use the element's native fullscreen. It rotates to landscape
+    // automatically and shows iOS's own controls (accepted limitation).
+    if (typeof video.webkitEnterFullscreen === 'function') {
       video.webkitEnterFullscreen()
+      return
+    }
+
+    // Android / desktop: fullscreen the <video> itself, then try to lock
+    // landscape (unsupported on many browsers → caught silently).
+    if (video.requestFullscreen) {
+      const lockLandscape = () => {
+        try {
+          screen.orientation?.lock?.('landscape')?.catch?.(() => {})
+        } catch {
+          /* orientation lock unsupported — ignore */
+        }
+      }
+      const req = video.requestFullscreen()
+      if (req && typeof req.then === 'function') req.then(lockLandscape).catch(() => {})
+      else lockLandscape()
     }
   }
 
@@ -226,14 +275,20 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
       <video
         ref={videoRef}
         className="h-full w-full bg-black object-cover"
+        style={
+          isFullscreen
+            ? { width: '100vw', height: '100vh', objectFit: 'contain' }
+            : undefined
+        }
         playsInline
         preload="metadata"
         poster="/0726-Couverture.jpg"
         onClick={togglePlay}
       />
 
-      {/* Dark wash over the poster before playback, to make the play button pop. */}
-      {!started && (
+      {/* Dark wash — over the poster before playback and over the last frame at
+          the end — to make the play button / end CTA pop. */}
+      {(!started || hasEnded) && (
         <div
           className="pointer-events-none absolute inset-0"
           style={{ background: 'rgba(0,0,0,0.5)' }}
@@ -257,9 +312,35 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
         </button>
       )}
 
+      {/* End-of-video state: replay button, booking CTA, and a nudging arrow. */}
+      {hasEnded && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 text-center">
+          <button
+            type="button"
+            onClick={togglePlay}
+            aria-label="Revoir la vidéo"
+            className="group/replay flex items-center justify-center"
+          >
+            <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-accent/40 bg-accent/15 text-accent backdrop-blur-sm transition-transform duration-300 group-hover/replay:scale-110">
+              <span className="ml-1">
+                <PlayIcon size={26} />
+              </span>
+            </span>
+          </button>
+
+          <a href="#contact" className="btn-primary">
+            Réserver un appel
+          </a>
+
+          <span className="arrow-bounce text-white/70" aria-hidden="true">
+            <ChevronDownIcon size={30} />
+          </span>
+        </div>
+      )}
+
       {/* Custom controls — mounted only once playback has started; then
           revealed on hover and hidden while playing. */}
-      {started && (
+      {started && !hasEnded && (
         <div
           className={`absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-4 pb-3 pt-10 transition-opacity duration-300 ${
             isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
