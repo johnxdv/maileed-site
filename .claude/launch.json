@@ -4,7 +4,7 @@
   "configurations": [
     {
       "name": "maileed",
-      "runtimeExecutable": "/tmp/nodejs/bin/node",
+      "runtimeExecutable": "/usr/local/bin/node",
       "runtimeArgs": ["node_modules/vite/bin/vite.js"],
       "port": 5175
     }
