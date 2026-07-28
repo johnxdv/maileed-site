@@ -160,6 +160,18 @@ export default function VideoPlayer({ src = DEFAULT_SRC, className = '' }) {
     const onEnded = () => {
       setIsPlaying(false)
       setHasEnded(true)
+      // Leave fullscreen the moment playback ends so the user lands back on the
+      // inline player, where the end overlay + CTA already render correctly.
+      if (document.fullscreenElement) {
+        document.exitFullscreen()
+        try {
+          screen.orientation?.unlock?.()
+        } catch {
+          /* not supported — ignore */
+        }
+      } else if (video.webkitDisplayingFullscreen) {
+        video.webkitExitFullscreen()
+      }
     }
     const onTime = () => {
       setCurrentTime(video.currentTime)
