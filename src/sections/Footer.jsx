@@ -35,7 +35,7 @@ export default function Footer() {
         </div>
 
         <a
-          href="https://www.linkedin.com/"
+          href="https://www.linkedin.com/in/armen-isajanyan-643195422/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
