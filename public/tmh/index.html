@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="_ds/organic-f16cc682-b238-4804-8016-23c3a5526bdc/styles.css">
+  <script src="_ds/organic-f16cc682-b238-4804-8016-23c3a5526bdc/_ds_bundle.js"></script>
+  <style>
+    @keyframes waterMove {
+      0% { background-position: 0% 50%, 100% 20%; }
+      50% { background-position: 100% 50%, 0% 80%; }
+      100% { background-position: 0% 50%, 100% 20%; }
+    }
+    .om-bg-gradient {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(circle at 20% 30%, var(--color-accent-2-200), transparent 60%),
+        radial-gradient(circle at 80% 70%, var(--color-accent-2-300), transparent 55%),
+        linear-gradient(160deg, var(--color-accent-2-100), var(--color-bg) 75%);
+      background-size: 180% 180%, 180% 180%, 100% 100%;
+      animation: waterMove 24s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .om-bg-gradient { animation: none; }
+    }
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="position:relative; overflow-x:hidden; font-family:var(--font-body); color:var(--color-text); background:var(--color-bg);">
+  <div class="om-bg-gradient"></div>
+  <canvas ref="{{ canvasRef }}" style="position:fixed; inset:0; z-index:1; width:100%; height:100%; pointer-events:none; display:block;"></canvas>
+
+  <nav aria-label="Navigation des sections" style="position:fixed; right:clamp(10px,2vw,28px); top:50%; transform:translateY(-50%); z-index:50; display:flex; flex-direction:column; gap:14px;">
+    <sc-for list="{{ navSections }}" as="sec" hint-placeholder-count="4">
+      <button title="{{ sec.label }}" aria-label="{{ sec.label }}" onClick="{{ sec.goTo }}" style="{{ sec.dotStyle }}"></button>
+    </sc-for>
+  </nav>
+
+  <section data-section="hero" ref="{{ heroRef }}" style="position:relative; z-index:2; min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:clamp(24px,6vw,80px); max-width:900px;">
+    <span style="display:inline-block; align-self:flex-start; padding:6px 16px; border-radius:999px; background:var(--color-accent-2-100); color:var(--color-accent-2-800); font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; margin-bottom:22px;">TMH Corporation, Green Molecule Fund</span>
+    <h1 style="font-family:var(--font-heading); font-size:clamp(34px,5.5vw,62px); line-height:1.1; margin:0 0 20px; color:var(--color-text);">Trouver les molécules qui changeront le monde. Avant tout le monde.</h1>
+    <p style="font-size:clamp(17px,1.6vw,20px); line-height:1.55; color:var(--color-neutral-700); max-width:620px; margin:0 0 30px;">Plan de sourcing et de mise en relation avec les entreprises et chercheurs qui font vraiment avancer la chimie verte, préparé par Maileed.</p>
+    <span style="display:inline-block; align-self:flex-start; padding:8px 18px; border-radius:999px; border:1.5px solid var(--color-accent-700); color:var(--color-accent-700); font-size:14px; font-weight:600;">Porté aujourd'hui au nom de TMH Corporation</span>
+  </section>
+
+  <section data-section="projet" ref="{{ projetRef }}" style="position:relative; z-index:2; padding:clamp(24px,6vw,80px); max-width:1100px;">
+    <h2 style="font-family:var(--font-heading); font-size:clamp(28px,3.4vw,40px); margin:0 0 24px; color:var(--color-text); display:flex; align-items:center; gap:10px;"><svg width="22" height="22" viewBox="0 0 20 20"><line x1="6" y1="6" x2="14" y2="6" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><line x1="6" y1="6" x2="10" y2="15" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><circle cx="6" cy="6" r="2.6" fill="var(--color-accent-2-700)"></circle><circle cx="14" cy="6" r="2.2" fill="var(--color-accent-2-600)"></circle><circle cx="10" cy="15" r="2.2" fill="var(--color-accent-2-600)"></circle></svg>Le projet</h2>
+    <p style="font-size:18px; line-height:1.6; color:var(--color-neutral-700); max-width:760px; margin:0 0 48px;">Green Molecule Fund veut identifier et financer des entreprises dont l'innovation change réellement la donne pour l'environnement, chimie verte, biochimie, matériaux durables. Une rupture technique, pas un service. La démarche est portée aujourd'hui au nom de TMH Corporation, le temps que la structure du fonds se mette en place.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; margin-bottom:56px;">
+      <sc-for list="{{ icpCards }}" as="card" hint-placeholder-count="4">
+        <div class="card elev-sm" onClick="{{ card.toggle }}" style="{{ card.cardStyle }}">
+          <div class="card-kicker" style="color:var(--color-accent-2-700);">{{ card.label }}</div>
+          <div class="card-body" style="font-size:15px; line-height:1.5; color:var(--color-neutral-800); margin-top:8px;">{{ card.teaser }}</div>
+          <sc-if value="{{ card.expanded }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:14px; line-height:1.5; color:var(--color-neutral-600); margin-top:10px; padding-top:10px; border-top:1px solid var(--color-accent-2-100);">{{ card.detail }}</div>
+          </sc-if>
+          <div style="font-size:12px; color:var(--color-accent-2-600); margin-top:12px; font-weight:600;">{{ card.hintLabel }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <blockquote style="position:relative; margin:0 0 48px; padding:32px 40px; background:var(--color-accent-2-100); border-radius:var(--radius-lg); max-width:760px;">
+      <p style="font-family:var(--font-heading); font-size:clamp(20px,2.4vw,26px); line-height:1.4; color:var(--color-accent-2-900); margin:0 0 16px;">"Une entreprise intelligente, réaliste, avec la capacité de réaliser quelque chose, motivée."</p>
+      <cite style="font-size:14px; color:var(--color-neutral-700); font-style:normal;">la définition du résultat parfait</cite>
+    </blockquote>
+
+    <div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+        <sc-for list="{{ tags }}" as="tag" hint-placeholder-count="5">
+          <span class="tag tag-accent-2">{{ tag }}</span>
+        </sc-for>
+      </div>
+      <p style="font-size:13px; color:var(--color-neutral-500); font-style:italic; margin:0;">une boussole, pas des cibles littérales</p>
+    </div>
+  </section>
+
+  <section data-section="livrable" ref="{{ livrableRef }}" style="position:relative; z-index:2; padding:clamp(24px,6vw,80px); max-width:1100px;">
+    <h2 style="font-family:var(--font-heading); font-size:clamp(28px,3.4vw,40px); margin:0 0 32px; color:var(--color-text); display:flex; align-items:center; gap:10px;"><svg width="22" height="22" viewBox="0 0 20 20"><line x1="6" y1="6" x2="14" y2="6" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><line x1="6" y1="6" x2="10" y2="15" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><circle cx="6" cy="6" r="2.6" fill="var(--color-accent-2-700)"></circle><circle cx="14" cy="6" r="2.2" fill="var(--color-accent-2-600)"></circle><circle cx="10" cy="15" r="2.2" fill="var(--color-accent-2-600)"></circle></svg>Ce qu'on peut livrer, ce qu'on ne peut pas</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
+      <div class="card elev-md" style="background:var(--color-accent-2-100); border-radius:var(--radius-lg); padding:28px;">
+        <div style="font-family:var(--font-heading); font-size:20px; color:var(--color-accent-2-900); margin-bottom:12px;">Trouvable</div>
+        <p style="font-size:16px; line-height:1.6; color:var(--color-neutral-800); margin:0;">Toute entreprise avec une présence numérique, même minime, un site, une page, une trace publique. Peu importe la taille, du moment qu'elle existe quelque part sur le web, on peut la trouver, la qualifier et l'approcher.</p>
+      </div>
+      <div style="border:2px dashed var(--color-neutral-400); border-radius:var(--radius-lg); padding:28px; opacity:.75;">
+        <div style="font-family:var(--font-heading); font-size:20px; color:var(--color-neutral-600); margin-bottom:12px;">Fantôme</div>
+        <p style="font-size:16px; line-height:1.6; color:var(--color-neutral-600); margin:0;">Un chercheur isolé dans son laboratoire à Osaka, sans site, sans trace, sans mention publique, personne ne peut le trouver par la donnée. Ni nous, ni personne d'autre. Ce qui n'a laissé aucune trace n'existe pas pour un outil de sourcing.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-section="etapes" ref="{{ etapesRef }}" style="position:relative; z-index:2; padding:clamp(24px,6vw,80px); max-width:900px;">
+    <h2 style="font-family:var(--font-heading); font-size:clamp(28px,3.4vw,40px); margin:0 0 32px; color:var(--color-text); display:flex; align-items:center; gap:10px;"><svg width="22" height="22" viewBox="0 0 20 20"><line x1="6" y1="6" x2="14" y2="6" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><line x1="6" y1="6" x2="10" y2="15" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><circle cx="6" cy="6" r="2.6" fill="var(--color-accent-2-700)"></circle><circle cx="14" cy="6" r="2.2" fill="var(--color-accent-2-600)"></circle><circle cx="10" cy="15" r="2.2" fill="var(--color-accent-2-600)"></circle></svg>Prochaines étapes</h2>
+    <div style="display:flex; flex-direction:column;">
+      <sc-for list="{{ steps }}" as="step" hint-placeholder-count="8">
+        <div style="border-left:2px solid var(--color-accent-2-300); padding-left:24px; padding-bottom:28px; position:relative; cursor:pointer;" onClick="{{ step.toggle }}">
+          <div style="{{ step.dotStyle }}"></div>
+          <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-heading); font-size:14px; color:var(--color-accent-2-700);">{{ step.num }}</span>
+            <span style="font-size:13px; color:var(--color-neutral-500);">{{ step.date }}</span>
+          </div>
+          <div style="{{ step.titleStyle }}">{{ step.title }}</div>
+          <div style="{{ step.bodyStyle }}">
+            <p style="font-size:15px; line-height:1.5; color:var(--color-neutral-600); margin:8px 0 0;">{{ step.desc }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section data-section="notes" ref="{{ notesRef }}" style="position:relative; z-index:2; padding:clamp(24px,6vw,80px); max-width:1100px;">
+    <h2 style="font-family:var(--font-heading); font-size:clamp(28px,3.4vw,40px); margin:0 0 32px; color:var(--color-text); display:flex; align-items:center; gap:10px;"><svg width="22" height="22" viewBox="0 0 20 20"><line x1="6" y1="6" x2="14" y2="6" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><line x1="6" y1="6" x2="10" y2="15" stroke="var(--color-accent-2-500)" stroke-width="1.4"></line><circle cx="6" cy="6" r="2.6" fill="var(--color-accent-2-700)"></circle><circle cx="14" cy="6" r="2.2" fill="var(--color-accent-2-600)"></circle><circle cx="10" cy="15" r="2.2" fill="var(--color-accent-2-600)"></circle></svg>Notes</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px;">
+      <div class="card elev-sm" style="padding:22px; display:flex; flex-direction:column; gap:14px;">
+        <div style="font-family:var(--font-heading); font-size:16px; color:var(--color-accent-2-800);">Espace pour M. Mossé</div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+          <sc-for list="{{ mosseNotes }}" as="note" hint-placeholder-count="0">
+            <div style="{{ note.style }}">
+              <div style="font-size:14px; line-height:1.4; color:var(--color-neutral-800); white-space:pre-wrap;">{{ note.text }}</div>
+              <div style="font-size:11px; color:var(--color-accent-2-700); margin-top:8px; font-weight:600;">{{ note.date }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <textarea value="{{ draftMosse }}" onChange="{{ onNoteMosseChange }}" placeholder="Écrire une note..." style="min-height:100px; resize:vertical; border:1px solid var(--color-accent-2-200); border-radius:var(--radius-lg); padding:12px; font-family:var(--font-body); font-size:15px; color:var(--color-text); background:var(--color-bg);"></textarea>
+        <div style="display:flex; justify-content:flex-end;">
+          <button class="btn btn-primary" onClick="{{ onPublishMosse }}">Publier</button>
+        </div>
+      </div>
+      <div class="card elev-sm" style="padding:22px; display:flex; flex-direction:column; gap:14px;">
+        <div style="font-family:var(--font-heading); font-size:16px; color:var(--color-accent-2-800);">Espace pour Armen</div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+          <sc-for list="{{ armenNotes }}" as="note" hint-placeholder-count="0">
+            <div style="{{ note.style }}">
+              <div style="font-size:14px; line-height:1.4; color:var(--color-neutral-800); white-space:pre-wrap;">{{ note.text }}</div>
+              <div style="font-size:11px; color:var(--color-accent-700); margin-top:8px; font-weight:600;">{{ note.date }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <textarea value="{{ draftArmen }}" onChange="{{ onNoteArmenChange }}" placeholder="Écrire une note..." style="min-height:100px; resize:vertical; border:1px solid var(--color-accent-2-200); border-radius:var(--radius-lg); padding:12px; font-family:var(--font-body); font-size:15px; color:var(--color-text); background:var(--color-bg);"></textarea>
+        <div style="display:flex; justify-content:flex-end;">
+          <button class="btn btn-primary" onClick="{{ onPublishArmen }}">Publier</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="position:relative; z-index:2; padding:40px clamp(24px,6vw,80px) 60px; text-align:center;">
+    <p style="font-size:14px; color:var(--color-neutral-500); margin:0;">Préparé par Maileed pour TMH Corporation, Août 2026</p>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;creatureDensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:14,&quot;min&quot;:6,&quot;max&quot;:24,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ambiance aquatique&quot;},&quot;animationSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ambiance aquatique&quot;},&quot;showFish&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ambiance aquatique&quot;}}">
+class Component extends DCLogic {
+  state = {
+    expanded: {}, activeStep: 0, activeSection: 'hero',
+    draftMosse: '', draftArmen: '',
+    publishedMosse: this.loadNotes('tmh-notes-mosse'),
+    publishedArmen: this.loadNotes('tmh-notes-armen'),
+  };
+
+  loadNotes(key) {
+    try {
+      const raw = typeof localStorage !== 'undefined' && localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : [];
+    } catch (err) { return []; }
+  }
+
+  saveNotes(key, list) {
+    try { localStorage.setItem(key, JSON.stringify(list)); } catch (err) {}
+  }
+
+  handleNoteMosseChange = (e) => { this.setState({ draftMosse: e.target.value }); };
+  handleNoteArmenChange = (e) => { this.setState({ draftArmen: e.target.value }); };
+
+  publishMosse = () => {
+    const text = this.state.draftMosse.trim();
+    if (!text) return;
+    const entry = { text, date: new Date().toLocaleDateString('fr-FR'), rot: Math.round(Math.random() * 6 - 3) };
+    this.setState((s) => {
+      const list = [entry, ...s.publishedMosse];
+      this.saveNotes('tmh-notes-mosse', list);
+      return { publishedMosse: list, draftMosse: '' };
+    });
+  };
+
+  publishArmen = () => {
+    const text = this.state.draftArmen.trim();
+    if (!text) return;
+    const entry = { text, date: new Date().toLocaleDateString('fr-FR'), rot: Math.round(Math.random() * 6 - 3) };
+    this.setState((s) => {
+      const list = [entry, ...s.publishedArmen];
+      this.saveNotes('tmh-notes-armen', list);
+      return { publishedArmen: list, draftArmen: '' };
+    });
+  };
+  canvasRef = React.createRef();
+  sectionEls = {};
+  _refCache = {};
+  _goToCache = {};
+  _icpToggleCache = {};
+  _stepToggleCache = {};
+
+  getSectionRef = (id) => {
+    if (!this._refCache[id]) {
+      this._refCache[id] = (el) => {
+        this.sectionEls[id] = el;
+        if (el && this.observer) this.observer.observe(el);
+      };
+    }
+    return this._refCache[id];
+  };
+
+  getSectionGoTo = (id) => {
+    if (!this._goToCache[id]) {
+      this._goToCache[id] = () => this.scrollToSection(id);
+    }
+    return this._goToCache[id];
+  };
+
+  getICPToggle = (key) => {
+    if (!this._icpToggleCache[key]) {
+      this._icpToggleCache[key] = () => {
+        this.setState((s) => ({ expanded: { ...s.expanded, [key]: !s.expanded[key] } }));
+      };
+    }
+    return this._icpToggleCache[key];
+  };
+
+  getStepToggle = (i) => {
+    if (!this._stepToggleCache[i]) {
+      this._stepToggleCache[i] = () => this.setState({ activeStep: i });
+    }
+    return this._stepToggleCache[i];
+  };
+
+  scrollToSection = (id) => {
+    const el = this.sectionEls[id];
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 10;
+    window.scrollTo({ top, behavior: this.reducedMotion ? 'auto' : 'smooth' });
+  };
+
+  componentDidMount() {
+    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+          const id = entry.target.getAttribute('data-section');
+          if (id) this.setState({ activeSection: id });
+        }
+      });
+    }, { threshold: [0.4, 0.6] });
+    Object.keys(this.sectionEls).forEach((id) => {
+      if (this.sectionEls[id]) this.observer.observe(this.sectionEls[id]);
+    });
+    this.mouse = { x: -9999, y: -9999 };
+    this.setupCanvas();
+    this.handleResize = () => this.resizeCanvas();
+    this.handleMouse = (e) => { this.mouse.x = e.clientX; this.mouse.y = e.clientY; };
+    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('mousemove', this.handleMouse);
+    this.startTime = performance.now();
+    if (!this.reducedMotion) {
+      this.animate();
+    } else {
+      this.drawFrame(0);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this.observer) this.observer.disconnect();
+    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('mousemove', this.handleMouse);
+  }
+
+  setupCanvas() {
+    const canvas = this.canvasRef.current;
+    if (!canvas) return;
+    this.ctx = canvas.getContext('2d');
+    this.resizeCanvas();
+    const cs = getComputedStyle(document.documentElement);
+    const col = (v, fallback) => (cs.getPropertyValue(v).trim() || fallback);
+    this.colors = {
+      lineSoft: col('--color-accent-2-500', '#7a8a5e'),
+      dot: col('--color-accent-2-700', '#5c6c45'),
+      fish: col('--color-accent-2-700', '#5c6c45'),
+    };
+    const density = Math.max(4, Math.round(this.props.creatureDensity ?? 14));
+    this.molecules = Array.from({ length: density }, () => this.makeMolecule());
+    const showFish = this.props.showFish !== false;
+    this.fishes = showFish ? Array.from({ length: Math.max(3, Math.round(density / 3)) }, () => this.makeFish()) : [];
+  }
+
+  resizeCanvas() {
+    const canvas = this.canvasRef.current;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    if (this.ctx) this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  makeMolecule() {
+    const w = window.innerWidth, h = window.innerHeight;
+    const atomCount = 2 + Math.floor(Math.random() * 3);
+    return {
+      ax: Math.random() * w, ay: Math.random() * h,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.15 + Math.random() * 0.2,
+      driftR: 18 + Math.random() * 22,
+      atoms: Array.from({ length: atomCount }, () => ({ dx: (Math.random() - 0.5) * 30, dy: (Math.random() - 0.5) * 30 })),
+      offX: 0, offY: 0,
+    };
+  }
+
+  makeFish() {
+    const w = window.innerWidth, h = window.innerHeight;
+    return {
+      x: Math.random() * w, y: Math.random() * h,
+      dir: Math.random() < 0.5 ? 1 : -1,
+      speed: 0.15 + Math.random() * 0.25,
+      phase: Math.random() * Math.PI * 2,
+      size: 15 + Math.random() * 9,
+      offY: 0,
+    };
+  }
+
+  animate = () => {
+    const t = (performance.now() - this.startTime) / 1000;
+    this.drawFrame(t);
+    this.raf = requestAnimationFrame(this.animate);
+  };
+
+  drawFrame(t) {
+    const ctx = this.ctx;
+    if (!ctx) return;
+    const w = window.innerWidth, h = window.innerHeight;
+    ctx.clearRect(0, 0, w, h);
+    const spd = this.props.animationSpeed ?? 1;
+    const mouse = this.mouse;
+
+    (this.molecules || []).forEach((m) => {
+      const cx = m.ax + Math.cos(m.phase + t * m.speed * spd) * m.driftR;
+      const cy = m.ay + Math.sin(m.phase * 1.3 + t * m.speed * spd) * m.driftR * 0.6;
+      const dx = cx - mouse.x, dy = cy - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 130) {
+        const f = (130 - dist) / 130;
+        m.offX += (dx / (dist || 1)) * f * 3;
+        m.offY += (dy / (dist || 1)) * f * 3;
+      }
+      m.offX *= 0.92; m.offY *= 0.92;
+      const drawX = cx + m.offX, drawY = cy + m.offY;
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = this.colors.lineSoft;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      m.atoms.forEach((a) => {
+        ctx.moveTo(drawX, drawY);
+        ctx.lineTo(drawX + a.dx, drawY + a.dy);
+      });
+      ctx.stroke();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = this.colors.dot;
+      ctx.beginPath(); ctx.arc(drawX, drawY, 2.6, 0, Math.PI * 2); ctx.fill();
+      m.atoms.forEach((a) => {
+        ctx.beginPath(); ctx.arc(drawX + a.dx, drawY + a.dy, 1.8, 0, Math.PI * 2); ctx.fill();
+      });
+    });
+
+    (this.fishes || []).forEach((f) => {
+      f.x += f.dir * f.speed * spd;
+      if (f.x > w + 40) f.x = -40;
+      if (f.x < -40) f.x = w + 40;
+      let targetOffY = 0;
+      const dx = f.x - mouse.x, dy = f.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        targetOffY = (dy / (dist || 1)) * (100 - dist) * 0.6;
+      }
+      f.offY += (targetOffY - f.offY) * 0.08;
+      const y = f.y + Math.sin(f.phase + t * f.speed * spd * 2) * 6 + f.offY;
+      const s = f.size;
+      const tailSwing = Math.sin(t * f.speed * spd * 7 + f.phase) * 0.22;
+      ctx.save();
+      ctx.translate(f.x, y);
+      ctx.scale(f.dir, 1);
+      ctx.strokeStyle = this.colors.fish;
+      ctx.fillStyle = this.colors.fish;
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.moveTo(s * 0.85, 0);
+      ctx.quadraticCurveTo(s * 0.5, -s * 0.42, -s * 0.55, -s * 0.22);
+      ctx.quadraticCurveTo(-s * 0.85, -s * 0.05, -s * 0.85, 0);
+      ctx.quadraticCurveTo(-s * 0.85, s * 0.05, -s * 0.55, s * 0.22);
+      ctx.quadraticCurveTo(s * 0.5, s * 0.42, s * 0.85, 0);
+      ctx.closePath();
+      ctx.globalAlpha = 0.22;
+      ctx.fill();
+      ctx.globalAlpha = 0.7;
+      ctx.stroke();
+      ctx.save();
+      ctx.translate(-s * 0.85, 0);
+      ctx.rotate(tailSwing);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-s * 0.55, -s * 0.32);
+      ctx.lineTo(-s * 0.4, 0);
+      ctx.lineTo(-s * 0.55, s * 0.32);
+      ctx.closePath();
+      ctx.globalAlpha = 0.45;
+      ctx.fill();
+      ctx.restore();
+      ctx.beginPath();
+      ctx.moveTo(s * 0.05, -s * 0.2);
+      ctx.quadraticCurveTo(s * 0.12, -s * 0.5, s * 0.35, -s * 0.28);
+      ctx.globalAlpha = 0.5;
+      ctx.stroke();
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath(); ctx.arc(s * 0.55, -s * 0.03, 1.3, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  renderVals() {
+    const state = this.state;
+    const navDefs = [
+      { id: 'hero', label: 'Accueil' },
+      { id: 'projet', label: 'Le projet' },
+      { id: 'livrable', label: "Ce qu'on peut livrer" },
+      { id: 'etapes', label: 'Prochaines étapes' },
+      { id: 'notes', label: 'Notes' },
+    ];
+    const navSections = navDefs.map((s) => ({
+      id: s.id, label: s.label,
+      goTo: this.getSectionGoTo(s.id),
+      dotStyle: {
+        width: 12, height: 12, borderRadius: 999,
+        border: '2px solid var(--color-accent-2-600)',
+        background: state.activeSection === s.id ? 'var(--color-accent-2-600)' : 'transparent',
+        cursor: 'pointer', padding: 0, transition: 'background .3s ease',
+      },
+    }));
+
+    const icpDefs = [
+      { key: 'secteur', label: 'Secteur', teaser: 'Chimie verte & biochimie en priorité', detail: null },
+      { key: 'stade', label: 'Stade', teaser: 'Jeune, peu importe le stade exact', detail: 'la détermination à innover prime' },
+      { key: 'statut', label: 'Statut', teaser: "Priorité à l'inédit", detail: 'être le premier, pas le énième investisseur' },
+      { key: 'zone', label: 'Zone', teaser: 'Sans limite géographique', detail: 'la comparaison est même souhaitée' },
+    ];
+    const icpCards = icpDefs.map((c) => {
+      const expanded = !!state.expanded[c.key];
+      const teaser = c.teaser;
+      const detail = c.detail;
+      return {
+        key: c.key, label: c.label, teaser, detail, expanded,
+        hintLabel: detail ? (expanded ? '– Réduire' : '+ Détail') : '',
+        toggle: this.getICPToggle(c.key),
+        cardStyle: {
+          cursor: 'pointer', padding: '22px',
+          background: expanded ? 'var(--color-accent-2-100)' : 'var(--color-bg)',
+          borderRadius: 'var(--radius-lg)', transition: 'background .25s ease',
+        },
+      };
+    });
+
+    const tags = [
+      'Estichem (Danemark)', 'Oleon (Belgique)', 'Activion',
+      'Sébastien Lecommandoux (polymères biohybrides)', 'Recherches de Pollack (Univ. Washington)',
+    ];
+
+    const stepDefs = [
+      { num: '01', date: '13 août 2026', title: 'Liste complète & revue d\'échantillon', desc: "Création d'une liste complète et revue d'un échantillon." },
+      { num: '02', date: '14 août 2026', title: 'Analyse de l\'infrastructure', desc: "Analyse de l'infrastructure à mettre en place selon le flux qu'on va envoyer." },
+      { num: '03', date: '15 au 17 août 2026', title: 'Infrastructure grands volumes', desc: 'Création de l\'infrastructure pour envoyer de gros volumes.' },
+      { num: '04', date: '16 août 2026', title: 'Appel stratégique', desc: "Point d'avancement stratégique." },
+      { num: '05', date: '18 août 2026', title: 'Scraping des données', desc: "Scraping de toutes les données nécessaires pour rédiger des mails 100 % personnalisés en masse." },
+      { num: '06', date: '20 août 2026', title: 'Rédaction des séquences', desc: "Rédaction des séquences d'e-mails en fonction des secteurs." },
+      { num: '07', date: '20 août 2026', title: 'Appel stratégique', desc: "Point d'avancement stratégique." },
+      { num: '08', date: '22 août 2026', title: 'Bilan & stratégie', desc: "Analyse de tous les livrables et mise en place d'une stratégie avec M. Mossé avant le lancement." },
+    ];
+    const steps = stepDefs.map((s, i) => {
+      const active = state.activeStep === i;
+      return {
+        ...s, active,
+        toggle: this.getStepToggle(i),
+        dotStyle: {
+          position: 'absolute', left: '-31px', top: '2px', width: 10, height: 10, borderRadius: 999,
+          background: active ? 'var(--color-accent-2-600)' : 'var(--color-accent-2-300)',
+          transition: 'background .3s ease',
+        },
+        titleStyle: {
+          fontFamily: 'var(--font-heading)', fontSize: active ? '22px' : '18px',
+          color: active ? 'var(--color-text)' : 'var(--color-neutral-700)',
+          margin: '6px 0', transition: 'all .25s ease',
+        },
+        bodyStyle: {
+          maxHeight: active ? '200px' : '0px', overflow: 'hidden',
+          opacity: active ? 1 : 0, transition: 'all .3s ease',
+        },
+      };
+    });
+
+    return {
+      canvasRef: this.canvasRef,
+      heroRef: this.getSectionRef('hero'),
+      projetRef: this.getSectionRef('projet'),
+      livrableRef: this.getSectionRef('livrable'),
+      etapesRef: this.getSectionRef('etapes'),
+      notesRef: this.getSectionRef('notes'),
+      draftMosse: state.draftMosse,
+      draftArmen: state.draftArmen,
+      onNoteMosseChange: this.handleNoteMosseChange,
+      onNoteArmenChange: this.handleNoteArmenChange,
+      onPublishMosse: this.publishMosse,
+      onPublishArmen: this.publishArmen,
+      mosseNotes: state.publishedMosse.map((n) => ({
+        text: n.text, date: n.date,
+        style: { background: 'var(--color-accent-2-100)', padding: '14px 16px', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', transform: 'rotate(' + n.rot + 'deg)', width: '190px', minHeight: '110px' },
+      })),
+      armenNotes: state.publishedArmen.map((n) => ({
+        text: n.text, date: n.date,
+        style: { background: 'var(--color-accent-100)', padding: '14px 16px', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', transform: 'rotate(' + n.rot + 'deg)', width: '190px', minHeight: '110px' },
+      })),
+      navSections, icpCards, tags, steps,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
