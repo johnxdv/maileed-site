@@ -4,6 +4,64 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+
+<!-- =====================================================================
+     NOTES PARTAGÉES — Firebase Firestore (stockage commun temps réel).
+     >>> COLLE ICI LA CONFIG DE TON PROJET FIREBASE (voir instructions). <<<
+     Tant que la config n'est pas remplie, les notes sont simplement vides
+     (la page ne casse pas).
+     ==================================================================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  // 🔧 Remplace TOUTES les valeurs ci-dessous par celles de TON projet Firebase.
+  const firebaseConfig = {
+    apiKey: "AIzaSyCF3bd2NLrZP3K5aVviLRnxcxW85xfz518",
+    authDomain: "molecule-tmh.firebaseapp.com",
+    projectId: "molecule-tmh",
+    storageBucket: "molecule-tmh.firebasestorage.app",
+    messagingSenderId: "698468623994",
+    appId: "1:698468623994:web:c599630acf1a05a922bdc3"
+  };
+
+  // Un thread = une collection Firestore (tri par date, pas d'index composite requis).
+  const COLLECTIONS = { mosse: "notes_mosse", armen: "notes_armen" };
+  const isConfigured = firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith("PASTE_");
+
+  if (!isConfigured) {
+    console.warn("[tmh-notes] Firebase non configuré : colle ta config dans index.html. Notes désactivées en attendant.");
+    window.tmhNotes = {
+      subscribe(_thread, cb) { cb([]); return () => {}; },
+      publish() { console.warn("[tmh-notes] publication ignorée : Firebase non configuré."); return Promise.resolve(); }
+    };
+  } else {
+    const db = getFirestore(initializeApp(firebaseConfig));
+    window.tmhNotes = {
+      // Écoute temps réel : cb(list) est rappelé à chaque changement, pour tous les visiteurs.
+      subscribe(thread, cb) {
+        const q = query(collection(db, COLLECTIONS[thread]), orderBy("createdAt", "desc"));
+        return onSnapshot(
+          q,
+          (snap) => cb(snap.docs.map((d) => {
+            const x = d.data();
+            return { text: x.text, date: x.date, rot: x.rot };
+          })),
+          (err) => console.error("[tmh-notes] onSnapshot", thread, err)
+        );
+      },
+      // Publie une note : le onSnapshot ci-dessus la renverra à tout le monde (dont l'auteur).
+      publish(thread, entry) {
+        return addDoc(collection(db, COLLECTIONS[thread]), {
+          text: entry.text, date: entry.date, rot: entry.rot,
+          createdAt: serverTimestamp()
+        });
+      }
+    };
+  }
+  document.dispatchEvent(new Event("tmh-notes-ready"));
+</script>
 </head>
 <body>
 <x-dc>
@@ -162,19 +220,17 @@ class Component extends DCLogic {
   state = {
     expanded: {}, activeStep: 0, activeSection: 'hero',
     draftMosse: '', draftArmen: '',
-    publishedMosse: this.loadNotes('tmh-notes-mosse'),
-    publishedArmen: this.loadNotes('tmh-notes-armen'),
+    publishedMosse: [],
+    publishedArmen: [],
   };
 
-  loadNotes(key) {
-    try {
-      const raw = typeof localStorage !== 'undefined' && localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : [];
-    } catch (err) { return []; }
-  }
-
-  saveNotes(key, list) {
-    try { localStorage.setItem(key, JSON.stringify(list)); } catch (err) {}
+  // Notes partagées via Firestore (temps réel) — remplace l'ancien localStorage.
+  // window.tmhNotes est fourni par le <script type="module"> Firebase du <head>.
+  subscribeNotes() {
+    if (!window.tmhNotes) return false;
+    this._unsubMosse = window.tmhNotes.subscribe('mosse', (list) => this.setState({ publishedMosse: list }));
+    this._unsubArmen = window.tmhNotes.subscribe('armen', (list) => this.setState({ publishedArmen: list }));
+    return true;
   }
 
   handleNoteMosseChange = (e) => { this.setState({ draftMosse: e.target.value }); };
@@ -184,22 +240,16 @@ class Component extends DCLogic {
     const text = this.state.draftMosse.trim();
     if (!text) return;
     const entry = { text, date: new Date().toLocaleDateString('fr-FR'), rot: Math.round(Math.random() * 6 - 3) };
-    this.setState((s) => {
-      const list = [entry, ...s.publishedMosse];
-      this.saveNotes('tmh-notes-mosse', list);
-      return { publishedMosse: list, draftMosse: '' };
-    });
+    this.setState({ draftMosse: '' });
+    if (window.tmhNotes) window.tmhNotes.publish('mosse', entry).catch((err) => console.error('[tmh-notes] publish', err));
   };
 
   publishArmen = () => {
     const text = this.state.draftArmen.trim();
     if (!text) return;
     const entry = { text, date: new Date().toLocaleDateString('fr-FR'), rot: Math.round(Math.random() * 6 - 3) };
-    this.setState((s) => {
-      const list = [entry, ...s.publishedArmen];
-      this.saveNotes('tmh-notes-armen', list);
-      return { publishedArmen: list, draftArmen: '' };
-    });
+    this.setState({ draftArmen: '' });
+    if (window.tmhNotes) window.tmhNotes.publish('armen', entry).catch((err) => console.error('[tmh-notes] publish', err));
   };
   canvasRef = React.createRef();
   sectionEls = {};
@@ -273,6 +323,12 @@ class Component extends DCLogic {
     } else {
       this.drawFrame(0);
     }
+
+    // Notes temps réel : s'abonner à Firestore dès que le module Firebase est prêt.
+    if (!this.subscribeNotes()) {
+      this._onNotesReady = () => this.subscribeNotes();
+      document.addEventListener('tmh-notes-ready', this._onNotesReady, { once: true });
+    }
   }
 
   componentWillUnmount() {
@@ -280,6 +336,9 @@ class Component extends DCLogic {
     if (this.observer) this.observer.disconnect();
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('mousemove', this.handleMouse);
+    if (this._unsubMosse) this._unsubMosse();
+    if (this._unsubArmen) this._unsubArmen();
+    if (this._onNotesReady) document.removeEventListener('tmh-notes-ready', this._onNotesReady);
   }
 
   setupCanvas() {
