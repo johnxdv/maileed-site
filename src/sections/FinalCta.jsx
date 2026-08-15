@@ -118,7 +118,12 @@ export default function FinalCta() {
               style={{
                 width: '100%',
                 minWidth: isMobile ? '100%' : '1100px',
-                height: isMobile ? '660px' : '520px',
+                // Mobile: let the container grow with Cal.com's dynamic iframe height
+                // (min 660px so it doesn't collapse) so the booking widget — including
+                // the confirmation button at the bottom — is never overlapped by the
+                // footer. Desktop keeps a fixed height + clip for the branding.
+                height: isMobile ? 'auto' : '520px',
+                minHeight: isMobile ? '660px' : undefined,
                 overflow: isMobile ? 'visible' : 'hidden',
                 borderRadius: '12px',
                 margin: '0 auto',
