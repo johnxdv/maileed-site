@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import Logo from '../components/Logo'
 import LegalModal from '../components/LegalModal'
 import { mentionsLegales, politiqueConfidentialite } from '../data/legal'
@@ -45,6 +46,22 @@ export default function Footer() {
             <path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3V9zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.33-.02-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95V21H9V9z" />
           </svg>
         </a>
+      </div>
+
+      {/* Oversized outlined brand wordmark — last element before the page ends. */}
+      <div
+        className="pointer-events-none relative mt-8 -mb-3 flex justify-center overflow-hidden"
+        aria-hidden="true"
+      >
+        <motion.span
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="footer-brand block select-none"
+        >
+          maileed
+        </motion.span>
       </div>
 
       <LegalModal

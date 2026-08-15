@@ -223,6 +223,39 @@ body {
   100% { transform: translate(-360px, 110px); }
 }
 
+/* Oversized outlined brand wordmark at the very bottom of the footer.
+   Outline only (transparent fill) + a slow sheen that sweeps across. */
+.footer-brand {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.82;
+  text-transform: lowercase;
+  font-size: clamp(3.5rem, 30vw, 24rem);
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px rgba(56, 148, 255, 0.22);
+  background-image: linear-gradient(
+    100deg,
+    transparent 38%,
+    rgba(56, 148, 255, 0.18) 50%,
+    transparent 62%
+  );
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: footerBrandSheen 7s linear infinite;
+}
+@keyframes footerBrandSheen {
+  0% { background-position: 150% 0; }
+  100% { background-position: -60% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-brand { animation: none; }
+}
+
 /* Discreet vertical oscillation for the end-of-video down arrow */
 @keyframes arrowBounce {
   0%, 100% { transform: translateY(0); }
